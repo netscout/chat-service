@@ -1,0 +1,15 @@
+version: '3.0'
+
+volumes: 
+  redis_dev: {}
+
+services:
+  redis:
+    container_name: redis
+    image: redis:alpine
+    command: redis-server --requirepass votmdnjem
+    restart: always
+    ports:
+      - 6379:6379
+    volumes: 
+      - redis_dev:/data    

@@ -1,0 +1,63 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3 mt-5">
+      <div class="card">
+        <h4 class="card-header">상담원/매니저 로그인</h4>
+        <div class="card-body">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="name">이름:</label>
+              <input
+                type="text"
+                id="name"
+                formControlName="name"
+                required
+                placeholder="이름을 입력하세요..."
+                class="form-control"
+              />
+
+              <div *ngIf="hasError('name')" class="invalid-feedback">
+                <div *ngIf="hasRequiredError('name')">
+                  이름은 필수입니다.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="name">역할:</label>
+              <div>
+                <input id="manager" type="radio" value="1" name="role" formControlName="role">
+                <label for="manager">매니저</label>
+              </div>
+              <div>
+                <input id="advisor" type="radio" value="2" name="role" formControlName="role">
+                <label for="advisor">상담원</label>
+              </div>
+              <div *ngIf="hasError('role')" class="invalid-feedback">
+                <div *ngIf="hasRequiredError('role')">
+                  역할 선택은 필수 입니다.
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group command">
+              <button
+                type="submit"
+                [disabled]="form.invalid || loading"
+                class="btn btn-success">
+                <span
+                  *ngIf="loading"
+                  class="spinner-border spinner-border-sm mr-1"
+                ></span>
+                로그인
+              </button>
+            </div>
+
+            <div *ngIf="error" class="alert alert-danger mt-3 mb-0">
+              {{ error }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

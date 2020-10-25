@@ -1,0 +1,28 @@
+{
+  "name": "admin-lobby-server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start_": "node ./bin/www",
+    "start": "nodemon ./bin/www --exec babel-node --preset @babel/preset-env"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.11.5",
+    "bluebird": "^3.7.2",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "express": "~4.16.1",
+    "http-errors": "^1.8.0",
+    "kafkajs": "^1.14.0",
+    "morgan": "~1.9.1",
+    "redis": "^3.0.2",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.5"
+  }
+}

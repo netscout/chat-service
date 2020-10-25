@@ -1,0 +1,53 @@
+<nav class="navbar navbar-light bg-dark">
+  <span class="navbar-text text-light">
+    Customer Chat Service
+  </span>
+</nav>
+
+<div class="container mt-5 h-100">
+  <div class="row form-group">
+    <div class="col-sm-3">
+      이름:
+    </div>
+    <div class="col-sm-9">
+      <input
+        type="text" id="username" [value]="username" readonly=true
+        class="form-control">
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm-3">
+      상담 요청 사유:
+    </div>
+    <div class="col-sm-9">
+      <input
+        type="text" id="subject" [value]="subject" [readonly]="onChat || onRequestChat"
+        class="form-control">
+    </div>
+  </div>
+  <div class="row form-group command">
+    <div class="col">
+      <button type="button"
+        (click)="requestChat()"
+        class="btn btn-success"
+        [disabled]="onChat || onRequestChat">
+        상담요청하기
+      </button>
+
+      <button type="button"
+        (click)="cancelChat()"
+        class="btn btn-primary ml-1"
+        [disabled]="!onRequestChat">
+        요청취소하기
+      </button>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <app-chat-ui
+      *ngIf="onChat"
+      [username]="username"
+      [roomId]="currentRoomId"
+      (exitChat)="exitChat($event)"></app-chat-ui>
+  </div>
+</div>

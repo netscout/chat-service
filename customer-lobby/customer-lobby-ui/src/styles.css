@@ -1,0 +1,30 @@
+/* https://socket.io/get-started/chat */
+/* * { margin: 0; padding: 0; box-sizing: border-box; } */
+/* body { font: 13px Helvetica, Arial; } */
+body {
+  height:100%;
+}
+
+/* .messages {
+  height: 100%;
+}
+
+.bottom {
+  align-self: flex-end;
+}
+
+.chat_input_layer {
+  margin-top: auto;
+  background: #000;
+  padding: 3px;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: inherit;
+}
+.chat_input_layer #m { border: 0; padding: 10px; width: 90%; margin-right: 0.5%; }
+.chat_input_layer button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+#messages { list-style-type: none; margin: 0; padding: 0; }
+#messages li { padding: 5px 10px; }
+#messages li:nth-child(odd) { background: #eee; }
+ */

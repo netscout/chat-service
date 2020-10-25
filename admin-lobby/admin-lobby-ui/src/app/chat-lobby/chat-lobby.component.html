@@ -1,0 +1,84 @@
+<nav class="navbar navbar-light bg-dark">
+  <span class="navbar-text text-light">
+    Customer Chat Service
+  </span>
+</nav>
+
+<div class="container mt-5 h-100">
+  <div class="row form-group">
+    <div class="col-sm-3">
+      이름:
+    </div>
+    <div class="col-sm-9">
+      <input
+        type="text" id="username" [value]="currentUser.name" readonly=true
+        class="form-control">
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm-3">
+      역할:
+    </div>
+    <div class="col-sm-9">
+      {{ getRoleTitle }}
+    </div>
+  </div>
+  <div class="row">
+    <h4>접속 중인 상담원 목록</h4>
+    <div class="container mh-25">
+      <div *ngFor="let connected of connectedAdvisorList">
+        <div *ngIf="connected.username !== currentUser.name" class="row">
+          <div class="col-sm-2">
+            {{connected.username}}
+          </div>
+          <div class="col-sm-2">
+            {{GetRoleTitle(connected.role)}}
+          </div>
+          <div class="col-sm-2">
+            {{GetStatusTitle(connected.status)}}
+          </div>
+          <div class="col-sm-2">
+            <button
+              type="button"
+              (click)="startChatWithAdvisor(connected.id)"
+              class="btn btn-success"
+              [disabled]="onChatWith(connected.id)">
+              대화 하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <h4>상담 요청 중인 고객 목록(접속중: {{ connectedCustomerCount }})</h4>
+    <div class="container mh-25">
+      <div *ngFor="let customer of requestedCustomerList"
+        class="row">
+        <div class="col-sm-2">
+          {{customer.username}}
+        </div>
+        <div class="col-sm-6">
+          {{customer.subject}}
+        </div>
+        <div class="col-sm-2">
+          <button type="button"
+            (click)="joinChatWithCustomer(customer.id)"
+            class="btn btn-success"
+            [disabled]="onChatWith(customer.username)">
+            상담하기
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-5">
+    <div *ngFor="let chatRoom of chatRoomList">
+      <app-chat-ui
+        [userInfo]="currentUser"
+        [roomInfo]="chatRoom"
+        (exitChat)="exitChat($event)">
+      </app-chat-ui>
+    </div>
+  </div>
+</div>
