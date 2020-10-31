@@ -9,7 +9,7 @@ import socket from "socket.io"
 
 import v1Router from "./routes/v1";
 
-import { initWebSocket } from "./services/chat-service";
+import { initChatService } from "./services/chat-service";
 
 var app = express();
 
@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
  */
 app.io = socket()
 
-initWebSocket(app.io)
+initChatService(app.io)
 
 //------------------------에러 처리---------------------------
 

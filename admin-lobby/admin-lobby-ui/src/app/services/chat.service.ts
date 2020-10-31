@@ -47,7 +47,7 @@ export class ChatService {
 
   // customerTotalConnected() {
   //   return new Observable((observer) => {
-  //     this.socket.on('total_customer_connected', (count) => {
+  //     this.socket.on('event:total_customer_connected', (count) => {
 
   //       observer.next(count);
   //     })
@@ -56,7 +56,7 @@ export class ChatService {
 
   // customerDisconnected() {
   //   return new Observable((observer) => {
-  //     this.socket.on('customer_disconnected', (id) => {
+  //     this.socket.on('event:customer_disconnected', (id) => {
 
   //       observer.next(id);
   //     })

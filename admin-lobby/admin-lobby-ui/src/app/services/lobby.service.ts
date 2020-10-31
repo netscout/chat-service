@@ -48,7 +48,7 @@ export class LobbyService {
 
   totalCustomerConnected() {
     return new Observable((observer) => {
-      this.socket.on('total_customer_connected', (count) => {
+      this.socket.on('event:total_customer_connected', (count) => {
 
         observer.next(count);
       })
@@ -57,7 +57,7 @@ export class LobbyService {
 
   customerChatRequest() {
     return new Observable((observer) => {
-      this.socket.on('customer_chat_request', (chatReq) => {
+      this.socket.on('event:customer_chat_request', (chatReq) => {
 
         observer.next(chatReq);
       })
@@ -66,7 +66,7 @@ export class LobbyService {
 
   customerCancelChatRequest() {
     return new Observable((observer) => {
-      this.socket.on('customer_cancel_chat_request', (chatReq) => {
+      this.socket.on('event:customer_cancel_chat_request', (chatReq) => {
 
         observer.next(chatReq);
       })
@@ -75,7 +75,7 @@ export class LobbyService {
 
   customerDisconnected() {
     return new Observable((observer) => {
-      this.socket.on('customer_disconnected', (id) => {
+      this.socket.on('event:customer_disconnected', (id) => {
 
         observer.next(id);
       })
@@ -97,7 +97,7 @@ export class LobbyService {
 
   joinChatSucceed() {
     return new Observable((observer) => {
-      this.socket.on('chat:join-succeed', (roomId) => {
+      this.socket.on('event:chat_join_succeed', (roomId) => {
         observer.next(roomId);
       })
     })
