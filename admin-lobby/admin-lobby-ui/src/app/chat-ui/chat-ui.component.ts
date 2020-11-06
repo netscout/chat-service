@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ChatMessage } from '../models/chat-message';
 import { ChatRoom } from '../models/chat-room';
 import { User } from '../models/user';
@@ -12,7 +13,7 @@ import { AutoScrollableComponent } from '../shared/auto-scrollable.component';
 })
 export class ChatUiComponent
   extends AutoScrollableComponent
-  implements OnInit, AfterViewInit {
+  implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('scrollFrame', {static: false}) scrollFrame: ElementRef;
   @ViewChildren('message') messageElements: QueryList<any>;
 
@@ -20,6 +21,8 @@ export class ChatUiComponent
   @Input() roomInfo: ChatRoom;
   @Input() withCustomer: boolean;
   @Output() exitChat = new EventEmitter<ChatMessage>();
+
+  private eventSubscriptions: Subscription[] = [];
 
   newMessage: string = "";
   messageList: ChatMessage[] = [];
@@ -30,39 +33,48 @@ export class ChatUiComponent
   }
 
   ngOnInit(): void {
+    this.eventSubscriptions.push(
     this.chatService
-      .getMessage()
+      .newMessage$
+      //.getMessage()
       .subscribe((data: ChatMessage) => {
         console.log(data);
         //const message = JSON.parse(data) as ChatMessage;
         if(data.roomId == this.roomInfo.roomId) {
           this.messageList.push(data);
         }
-      });
+      })
+    );
 
+    this.eventSubscriptions.push(
     this.chatService
-      .joinedRoom()
+      .joinedRoom$
       .subscribe((data: ChatMessage) => {
         if(data.roomId == this.roomInfo.roomId) {
           this.messageList.push(data);
         }
-      });
+      })
+    );
 
+    this.eventSubscriptions.push(
     this.chatService
-      .exitedRoom()
+      .exitedRoom$
       .subscribe((data: ChatMessage) => {
         if(data.roomId == this.roomInfo.roomId) {
           this.messageList.push(data);
         }
-      });
+      })
+    );
 
+    this.eventSubscriptions.push(
     this.chatService
-      .customerExited()
+      .customerExited$
       .subscribe((chatMsg: ChatMessage) => {
         if(chatMsg.roomId == this.roomInfo.roomId) {
           this.messageList.push(chatMsg);
         }
       })
+    );
   }
 
   ngAfterViewInit() {
@@ -96,5 +108,11 @@ export class ChatUiComponent
     );
 
     this.exitChat.emit(message);
+  }
+
+  ngOnDestroy() {
+    for(const sub of this.eventSubscriptions) {
+      sub.unsubscribe();
+    }
   }
 }

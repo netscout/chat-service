@@ -57,6 +57,17 @@ const getCurrentAdvisor = async (socketId) => {
   return onlineAdvisor;
 };
 
+const sendResponse = (socket, reqMessage, params, succeed) => {
+  const resData = {
+    type: reqMessage,
+    params: params,
+    succeed: succeed
+  };
+
+  console.log(`message response : ${resData}`);
+  socket.emit("response", resData);
+}
+
 /**
  * @param {object} socket 현재 접속한 socket객체
  * @param {object} next 다음으로 처리할 미들웨어
@@ -129,6 +140,8 @@ export const init = async (socket, next) => {
     return next();
   }
 
+  sendResponse(socket, "connected", {}, false);
+
   return next(new Error("사용자 아이디가 없음."));
 };
 
@@ -140,27 +153,44 @@ export const init = async (socket, next) => {
 export const connected = async (io, socket) => {
   console.log("유저 들어옴.");
 
+  sendResponse(socket, "connected", {}, true);
+
   //TODO : 나를 제외한 다른 사람들에게 내가 조인했다는 걸 알려야 함.
   const onlineAdvisor = await getCurrentAdvisor(socket.id);
-  socket.broadcast.emit("advisor_connected", JSON.stringify(onlineAdvisor));
+  //socket.broadcast.emit("lobby:advisor_connected", JSON.stringify(onlineAdvisor));
+  let noti = {
+    type: "lobby:advisor_connected",
+    data: onlineAdvisor
+  };
+  socket.broadcast.emit("notification", noti);
 
   //현재 접속자 목록 가져오기
   const connectedList = await getConnectedAdvisorList();
-
+  
   //접속한 상담원에게 현재 접속한 모든 상담원 목록 전송
-  io.emit("total_advisor_connected", JSON.stringify(connectedList));
+  noti = {
+    type: "lobby:total_advisor_connected",
+    data: connectedList
+  };
+  //io.emit("lobby:total_advisor_connected", JSON.stringify(connectedList));
+  io.emit("notification", noti);
 
   //접속한 상담원에게 현재 접속중인 고객수 전송
   const connectedCustomerCount = await getConnectedCustomerList();
-  io.emit("event:total_customer_connected", connectedCustomerCount);
+  noti = {
+    type: "event:total_customer_connected",
+    data: connectedCustomerCount
+  };
+  //io.emit("event:total_customer_connected", connectedCustomerCount);
+  io.emit("notification", noti);
 };
 
 /**
  * @param {object} socket 현재 접속한 socket 객체
  * @description 소켓 접속 종료 이벤트 핸들러
  */
-export const disconnect = (socket) => {
-  socket.on("disconnect", async () => {
+export const disconnect = async (socket) => {  
+  //socket.on("disconnect", async () => {
     console.log(`disconnect from : ${socket.id}`);
     //소켓ID와 연결된 사용자ID 조회
     let id = await getValue(socket.id);
@@ -171,71 +201,104 @@ export const disconnect = (socket) => {
     }
 
     //TODO : 내가 나갔다는 걸 다른 사람들에게 알려야 함.
-    socket.broadcast.emit(
-      "advisor_disconnected",
-      JSON.stringify(onlineAdvisor)
-    );
+    let noti = {
+      type: "lobby:advisor_disconnected",
+      data: onlineAdvisor
+    };
+    // socket.broadcast.emit(
+    //   "lobby:advisor_disconnected",
+    //   JSON.stringify(onlineAdvisor)
+    // );
+    socket.broadcast.emit("notification", noti);
 
     console.log("유저 나감.");
-  });
+  //});
 };
 
 /**
  * @param {object} socket 현재 접속한 socket 객체
  * @description 다른 상담원에게 채팅 요청 보내기
  */
-export const sendChatRequestToAdvisor = (socket) => {
-  socket.on("start_chat_with_advisor", async (data) => {
-    console.log(data);
+export const chatRequest = async (socket, req) => {
+  sendResponse(socket, "chatRequest", req, true);
 
-    //룸을 생성해 조인
-    socket.join(data.roomId);
+  if(req.toCustomer) {
+    console.log("상담원은 고객에게 채팅 요청 불가.");
+    return;
+  }
 
-    //다른 사용자에게도 메세지를 보내서 방에 접속하라고 알린다.
-    let toAdvisor = await getValue(getAdvisorKey(data.toId));
-    if (toAdvisor) {
-      toAdvisor = JSON.parse(toAdvisor);
-    }
+  //socket.on("chat:request_to_advisor", async (data) => {
+  console.log(req);
 
-    io.to(toAdvisor.socketId).emit("invited_chat_with", data);
-  });
+  //룸을 생성해 조인
+  socket.join(req.roomId);
+
+  //다른 사용자에게도 메세지를 보내서 방에 접속하라고 알린다.
+  let toAdvisor = await getValue(getAdvisorKey(req.toId));
+  if (toAdvisor) {
+    toAdvisor = JSON.parse(toAdvisor);
+  }
+
+  let noti = {
+    type: "chat:received_request_from_advisor",
+    data: req
+  };
+  // io.to(toAdvisor.socketId).emit("chat:received_request_from_advisor", req);
+  //});
+  io.to(toAdvisor.socketId).emit("notification", noti);
+};
+
+export const joinChat = (socket, req) => {
+  sendResponse(socket, "joinChat", req, true);
+  if(req.toCustomer) {
+    acceptCustomerChatRequest(socket, req);
+  }
+  else {
+    acceptAdvisorChatRequest(socket, req);
+  }
 };
 
 /**
  * @param {object} socket 현재 접속한 socket 객체
  * @description 다른 상담원의 채팅 요청 수락하기
  */
-export const acceptAdvisorChatRequest = (socket) => {
-  socket.on("join_chat_with_advisor", async (data) => {
-    console.log(data);
+const acceptAdvisorChatRequest = (socket, req) => {
+  //socket.on("chat:join_with_advisor", async (data) => {
+    console.log(req);
 
-    socket.join(data.roomId);
+    socket.join(req.roomId);
 
     const joined = {
-      roomId: data.roomId,
+      roomId: req.roomId,
       username: "__system__",
-      message: `${data.username}님이 대화에 참여합니다.`,
+      message: `${req.username}님이 대화에 참여합니다.`,
+    };
+
+    let noti = {
+      type: "chat:joined_room",
+      data: joined
     };
 
     //방에 접속한 사람들에게 내가 조인 했음을 알린다.
-    socket.to(data.roomId).emit("joinedRoom", joined);
-  });
+    // socket.to(req.roomId).emit("chat:joined_room", joined);
+    socket.to(req.roomId).emit("notification", noti);
+  //});
 };
 
 /**
  * @param {object} socket 현재 접속한 socket 객체
  * @description 고객의 채팅 요청 수락하기
  */
-export const acceptCustomerChatRequest = (socket) => {
-  socket.on("join_chat_with_customer", async (data) => {
-    console.log(data);
+const acceptCustomerChatRequest = (socket, req) => {
+  //socket.on("chat:join_with_customer", async (data) => {
+    console.log(req);
 
-    socket.join(data.roomId);
+    socket.join(req.roomId);
 
     const joined = {
-      roomId: data.roomId,
+      roomId: req.roomId,
       username: "__system__",
-      message: `${data.username}님이 대화에 참여합니다.`,
+      message: `${req.username}님이 대화에 참여합니다.`,
     };
 
     const message = {
@@ -244,25 +307,26 @@ export const acceptCustomerChatRequest = (socket) => {
     };
 
     kafkaPublish(process.env.KAFKA_TO_CUSTOMER_TOPIC, JSON.stringify(message));
-  });
+  //});
 };
 
 /**
  * @param {object} socket 현재 접속한 socket 객체
  * @description 채팅 방에서 나가기
  */
-export const exitRoom = (socket) => {
-  socket.on("exitRoom", async (chatMsg) => {
-    socket.leave(chatMsg.roomId);
+export const exitRoom = (socket, req) => {
+  sendResponse(socket, "exitRoom", req, true);
+  //socket.on("chat:exit_room", async (req) => {
+    socket.leave(req.roomId);
 
-    chatMsg.message = `${chatMsg.username}님이 대화에서 빠졌습니다.`;
+    req.message = `${req.username}님이 대화에서 빠졌습니다.`;
     //시스템 메세지로 설정
-    chatMsg.username = "__system__";
+    req.username = "__system__";
 
-    if (chatMsg.toCustomer) {
+    if (req.toCustomer) {
       const message = {
         type: "event:chat_exit",
-        value: chatMsg,
+        value: req,
       };
 
       kafkaPublish(
@@ -270,24 +334,31 @@ export const exitRoom = (socket) => {
         JSON.stringify(message)
       );
     } else {
+      let noti = {
+        type: "chat:exited_room",
+        data: req
+      };
+
       //방에 접속한 사람들에게 내가 나갔음을 알린다.
-      socket.to(chatMsg.roomId).emit("exitedRoom", chatMsg);
+      // socket.to(req.roomId).emit("chat:exited_room", req);
+      socket.to(req.roomId).emit("notification", noti);
     }
-  });
+  //});
 };
 
 /**
  * @param {object} socket 현재 접속한 socket 객체
  * @description 상담원 / 고객에게 메세지 보내기
  */
-export const sendMessage = (socket) => {
-  socket.on("add-message", async (chatMsg) => {
-    console.log(chatMsg);
+export const sendMessage = (socket, req) => {
+  sendResponse(socket, "sendMessage", req, true);
+  //socket.on("chat:new_message", async (req) => {
+    //console.log(req);
 
-    if (chatMsg.toCustomer) {
+    if (req.toCustomer) {
       const message = {
         type: "event:chat_message",
-        value: chatMsg,
+        value: req,
       };
 
       kafkaPublish(
@@ -295,8 +366,14 @@ export const sendMessage = (socket) => {
         JSON.stringify(message)
       );
     } else {
+      let noti = {
+        type: "chat:new_message",
+        data: req
+      };
+
       //roomId, name, message
-      socket.to(chatMsg.roomId).emit("new-message", chatMsg);
+      // socket.to(req.roomId).emit("chat:new_message", req);
+      socket.to(req.roomId).emit("notification", noti);
     }
-  });
+  //});
 };

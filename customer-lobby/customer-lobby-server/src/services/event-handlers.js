@@ -10,7 +10,7 @@ export const chatJoined = (io, joined) => {
   io.in(joined.roomId).emit("customer-chat:accepted", joined);
 
   //그리고 채팅 방에 조인
-  io.in(joined.roomId).emit("joinedRoom", joined);
+  io.in(joined.roomId).emit("chat:joined_room", joined);
 
   //채팅방에 조인 성공했음을 상담원에게 통지
   const message = {
@@ -27,7 +27,7 @@ export const chatJoined = (io, joined) => {
  * @description 상담원이 보낸 메세지 수신
  */
 export const chatMessage = (io, chatMsg) => {
-  io.in(chatMsg.roomId).emit("new-message", chatMsg);
+  io.in(chatMsg.roomId).emit("chat:new_message", chatMsg);
 };
 
 /**
@@ -43,5 +43,5 @@ export const chatExited = async (io, chatMsg) => {
   // const onlineUser = await getValue(getUserKey(chatMsg.id))
   // io.sockets.connected[onlineUser.socketId].leave(chatMsg.roomId);
 
-  io.in(chatMsg.roomId).emit("exitedRoom", chatMsg);
+  io.in(chatMsg.roomId).emit("chat:exited_room", chatMsg);
 };

@@ -1,5 +1,5 @@
 /**
- * https://medium.com/helper-studio/how-to-make-autoscroll-of-chat-when-new-message-adds-in-angular-68dd4e1e8acd
+ * https://medium.com/helper-studio/how-to-make-autoscroll-of-chat-when-chat:new_message-adds-in-angular-68dd4e1e8acd
  * 소스를 변형
  */
 

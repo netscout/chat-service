@@ -19,17 +19,40 @@ export const initChatService = (io) => {
   io.on("connection", async (socket) => {
     await chat.connected(io, socket);
 
-    chat.disconnect(socket);
+    socket.on("publish", async (req) => {
+      switch(req.type) {
+        case "disconnect":
+          await chat.disconnect(socket);
+          break;
+        case "chatRequest":
+          await chat.chatRequest(socket, req);
+          break;
+        case "joinChat":
+          chat.joinChat(socket, req);
+          break;
+        case "exitChat":
+          chat.exitRoom(socket, req);
+          break;
+        case "sendMessage":
+          chat.sendMessage(socket, req);
+          break;
+        default:
+          console.log(`wrong message type : ${req.type}`);
+          break;
+      }
+    })
 
-    chat.sendChatRequestToAdvisor(socket);
+    // chat.disconnect(socket);
 
-    chat.acceptAdvisorChatRequest(socket);
+    // chat.sendChatRequestToAdvisor(socket);
 
-    chat.acceptCustomerChatRequest(socket);
+    // chat.acceptAdvisorChatRequest(socket);
 
-    chat.exitRoom(socket);
+    // chat.acceptCustomerChatRequest(socket);
 
-    chat.sendMessage(socket);
+    // chat.exitRoom(socket);
+
+    // chat.sendMessage(socket);
   });
 
   //------------------------카프카 관련---------------------------

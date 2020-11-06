@@ -8,7 +8,11 @@
  * @description 현재 접속 중인 전체 고객 수 알림 처리
  */
 export const customerTotalConnected = (io, count) => {
-  io.emit("event:total_customer_connected", count);
+  const noti = {
+    type: "event:total_customer_connected",
+    data: count
+  };
+  io.emit("notification", noti);
 };
 
 /**
@@ -17,7 +21,11 @@ export const customerTotalConnected = (io, count) => {
  * @description 고객 접속 종료 알림
  */
 export const customerDisconnected = (io, id) => {
-  io.emit("event:customer_disconnected", id);
+  const noti = {
+    type: "event:customer_disconnected",
+    data: id
+  };
+  io.emit("notification", noti);
 };
 
 /**
@@ -26,7 +34,11 @@ export const customerDisconnected = (io, id) => {
  * @description 고객이 상담 요청함
  */
 export const customerChatRequest = (io, chatReq) => {
-  io.emit("event:customer_chat_request", chatReq);
+  const noti = {
+    type: "event:customer_chat_request",
+    data: chatReq
+  };
+  io.emit("notification", noti);
 };
 
 /**
@@ -35,7 +47,11 @@ export const customerChatRequest = (io, chatReq) => {
  * @description 고객이 상담 요청 취소함
  */
 export const customerCancelChatRequest = (io, chatReq) => {
-  io.emit("event:customer_cancel_chat_request", chatReq);
+  const noti = {
+    type: "event:customer_cancel_chat_request",
+    data: chatReq
+  };
+  io.emit("notification", noti);
 };
 
 /**
@@ -52,7 +68,11 @@ export const chatJoined = (data) => {
  * @description 고객의 채팅 메세지 수신
  */
 export const chatMessage = (io, chatMsg) => {
-  io.in(chatMsg.roomId).emit("new-message", chatMsg);
+  const noti = {
+    type: "chat:new_message",
+    data: chatMsg
+  };
+  io.in(chatMsg.roomId).emit("notification", noti);
 };
 
 /**
@@ -61,9 +81,11 @@ export const chatMessage = (io, chatMsg) => {
  * @description 고객이 채팅방에서 나감
  */
 export const chatExited = (io, chatMsg) => {
-  console.log(chatMsg);
-
-  io.in(chatMsg.roomId).emit("chat:customer-exited", chatMsg);
+  const noti = {
+    type: "chat:customer_exited",
+    data: chatMsg
+  };
+  io.in(chatMsg.roomId).emit("notification", noti);
 };
 
 /**
@@ -72,5 +94,9 @@ export const chatExited = (io, chatMsg) => {
  * @description 고객이 상담요청한 채팅방에 입장 성공
  */
 export const chatJoinSucceed = (io, roomId) => {
-  io.in(roomId).emit("event:chat_join_succeed", roomId);
+  const noti = {
+    type: "event:chat_join_succeed",
+    data: roomId
+  };
+  io.in(roomId).emit("notification", noti);
 };

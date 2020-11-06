@@ -20,15 +20,15 @@ export class LobbyService {
   }
 
   exitRoom(message: ChatMessage) {
-    this.socket.emit('exitRoom', message);
+    this.socket.emit('chat:exit_room', message);
   }
 
   requestChat(chatReq: CustomerChatRequest) {
-    this.socket.emit('customer-chat-request', chatReq);
+    this.socket.emit('chat:request_to_advisor', chatReq);
   }
 
   cancelChat(chatReq: CustomerChatRequest) {
-    this.socket.emit('customer-chat:canel-request', chatReq);
+    this.socket.emit('chat:cancel_request', chatReq);
   }
 
   requestAccepted() {
@@ -38,15 +38,4 @@ export class LobbyService {
       })
     })
   }
-
-  // getMessages() {
-  //   return new Observable((observer) => {
-  //     this.socket.on('new-meesage', (message) => {
-  //       observer.next(message);
-  //     })
-  //   })
-  //   // return this.socket
-  //   //   .fromEvent("message")
-  //   //   .pipe(map((data) => data.msg));
-  // }
 }

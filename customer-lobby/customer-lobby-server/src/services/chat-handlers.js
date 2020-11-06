@@ -125,7 +125,7 @@ export const disconnect = (socket) => {
  * @description 상담원에게 채팅 요청 보내기
  */
 export const sendChatRequest = (socket) => {
-  socket.on("customer-chat-request", async (chatReq) => {
+  socket.on("chat:request_to_advisor", async (chatReq) => {
     socket.join(chatReq.roomId);
 
     const message = {
@@ -143,7 +143,7 @@ export const sendChatRequest = (socket) => {
  * @description 상담원에게 보낸 채팅 요청 취소하기
  */
 export const cancelChatRequest = (socket) => {
-  socket.on("customer-chat:canel-request", async (chatReq) => {
+  socket.on("chat:cancel_request", async (chatReq) => {
     socket.leave(chatReq.roomId);
 
     const message = {
@@ -161,7 +161,7 @@ export const cancelChatRequest = (socket) => {
  * @description 채팅 방에서 나가기
  */
 export const exitRoom = (socket) => {
-  socket.on("exitRoom", async (chatMsg) => {
+  socket.on("chat:exit_room", async (chatMsg) => {
     socket.leave(chatMsg.roomId);
 
     chatMsg.message = `${chatMsg.username}님이 대화에서 빠졌습니다.`;
@@ -182,7 +182,7 @@ export const exitRoom = (socket) => {
  * @description 상담원에게 메세지 보내기
  */
 export const sendMessage = (socket) => {
-  socket.on("add-message", async (chatMsg) => {
+  socket.on("chat:new_message", async (chatMsg) => {
     const message = {
       type: "event:chat_message",
       value: chatMsg,

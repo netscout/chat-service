@@ -14,31 +14,28 @@ export class ChatService {
 
   joinedRoom() {
     return new Observable((observer) => {
-      this.socket.on('joinedRoom', (data) => {
+      this.socket.on('chat:joined_room', (data) => {
         observer.next(data);
       })
     })
   }
 
   sendMessage(message: ChatMessage) {
-    this.socket.emit('add-message', message);
+    this.socket.emit('chat:new_message', message);
   }
 
   getMessage() {
     return new Observable((observer) => {
-      this.socket.on('new-message', (message) => {
+      this.socket.on('chat:new_message', (message) => {
         console.log(message);
         observer.next(message);
       })
     })
-    // return this.socket
-    //   .fromEvent("message")
-    //   .pipe(map((data) => data.msg));
   }
 
   exitedRoom() {
     return new Observable((observer) => {
-      this.socket.on('exitedRoom', (data) => {
+      this.socket.on('chat:exited_room', (data) => {
         observer.next(data);
       })
     })
