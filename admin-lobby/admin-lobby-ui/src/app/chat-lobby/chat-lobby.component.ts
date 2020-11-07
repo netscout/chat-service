@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Role } from '../models/role';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthenticationService } from '../services/authentication.service';
-import { LobbyService } from '../services/lobby.service';
 import { ChatRequestToAdvisor } from '../models/chat-request-to-advisor';
 import { ChatMessage } from '../models/chat-message';
 import roleDict from '../models/role-dict';
@@ -41,7 +40,6 @@ export class ChatLobbyComponent implements OnInit, OnDestroy {
   onChat: boolean = false;
 
   constructor(
-    //private lobbyService: LobbyService,
     private authService: AuthenticationService,
     private chatService: ChatService
   ) {}
@@ -160,7 +158,7 @@ export class ChatLobbyComponent implements OnInit, OnDestroy {
 
     this.chatRoomList.push(chatRoom);
 
-    const joinChatData = {
+    const joinChatData = <ChatMessage>{
       roomId: chatReq.roomId,
       username: this.currentUser.name,
     };
@@ -180,7 +178,7 @@ export class ChatLobbyComponent implements OnInit, OnDestroy {
 
     this.chatRoomList.push(chatRoom);
 
-    const joinChatData = {
+    const joinChatData = <ChatMessage>{
       roomId: chatReq.roomId,
       username: this.currentUser.name,
     };

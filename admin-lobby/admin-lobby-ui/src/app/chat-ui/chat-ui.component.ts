@@ -36,10 +36,8 @@ export class ChatUiComponent
     this.eventSubscriptions.push(
     this.chatService
       .newMessage$
-      //.getMessage()
       .subscribe((data: ChatMessage) => {
         console.log(data);
-        //const message = JSON.parse(data) as ChatMessage;
         if(data.roomId == this.roomInfo.roomId) {
           this.messageList.push(data);
         }

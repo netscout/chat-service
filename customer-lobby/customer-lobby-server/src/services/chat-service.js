@@ -15,17 +15,29 @@ export const initChatService = (io) => {
    * Initialize socket.io
    */
   io.on("connection", async (socket) => {
-    console.log("유저 들어옴.");
+    chat.connected(socket);
 
     chat.disconnect(socket);
 
-    chat.sendChatRequest(socket);
-
-    chat.cancelChatRequest(socket);
-
-    chat.exitRoom(socket);
-
-    chat.sendMessage(socket);
+    socket.on("publish", async (req) => {
+      switch (req.type) {
+        case "chatRequest":
+          chat.sendChatRequest(socket, req);
+          break;
+        case "cancelChatRequest":
+          chat.cancelChatRequest(socket, req);
+          break;
+        case "exitChat":
+          chat.exitRoom(socket, req);
+          break;
+        case "sendMessage":
+          chat.sendMessage(socket, req);
+          break;
+        default:
+          console.log(`wrong message type : ${req.type}`);
+          break;
+      }
+    });
   });
 
   //------------------------Kafka------------------------------
@@ -44,4 +56,4 @@ export const initChatService = (io) => {
         break;
     }
   });
-}
+};

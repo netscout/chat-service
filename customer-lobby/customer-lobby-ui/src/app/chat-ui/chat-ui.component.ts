@@ -26,7 +26,7 @@ export class ChatUiComponent
 
   ngOnInit(): void {
     this.chatService
-      .getMessage()
+      .newMessage$
       .subscribe((data: ChatMessage) => {
         console.log(data);
         //const message = JSON.parse(data) as ChatMessage;
@@ -36,7 +36,7 @@ export class ChatUiComponent
       });
 
     this.chatService
-      .joinedRoom()
+      .joinedRoom$
       .subscribe((data: ChatMessage) => {
         if(data.roomId == this.roomId) {
           this.messageList.push(data);
@@ -44,7 +44,7 @@ export class ChatUiComponent
       });
 
     this.chatService
-      .exitedRoom()
+      .exitedRoom$
       .subscribe((data: ChatMessage) => {
         if(data.roomId == this.roomId) {
           this.messageList.push(data);

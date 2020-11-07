@@ -19,11 +19,10 @@ export const initChatService = (io) => {
   io.on("connection", async (socket) => {
     await chat.connected(io, socket);
 
+    chat.disconnect(socket);
+
     socket.on("publish", async (req) => {
       switch(req.type) {
-        case "disconnect":
-          await chat.disconnect(socket);
-          break;
         case "chatRequest":
           await chat.chatRequest(socket, req);
           break;
@@ -40,19 +39,7 @@ export const initChatService = (io) => {
           console.log(`wrong message type : ${req.type}`);
           break;
       }
-    })
-
-    // chat.disconnect(socket);
-
-    // chat.sendChatRequestToAdvisor(socket);
-
-    // chat.acceptAdvisorChatRequest(socket);
-
-    // chat.acceptCustomerChatRequest(socket);
-
-    // chat.exitRoom(socket);
-
-    // chat.sendMessage(socket);
+    });
   });
 
   //------------------------카프카 관련---------------------------

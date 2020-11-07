@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { LobbyService } from '../services/lobby.service';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthenticationService } from '../services/authentication.service';
 import { CustomerChatRequest } from '../models/customer-chat-request';
 import { ChatMessage } from '../models/chat-message';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-chat-lobby',
@@ -20,7 +19,7 @@ export class ChatLobbyComponent implements OnInit {
   currentRoomId: string;
 
   constructor(
-    private lobbyService: LobbyService,
+    private chatService: ChatService,
     private authService: AuthenticationService) { }
 
   ngOnInit(): void {
@@ -28,13 +27,13 @@ export class ChatLobbyComponent implements OnInit {
 
     const id = uuidv4();
     this.currentId = id;
-    this.lobbyService.connect({
+    this.chatService.connect({
       id: id,
       username: this.username
     });
 
-    this.lobbyService
-      .requestAccepted()
+    this.chatService
+      .chatAccepted$
       .subscribe((data: ChatMessage) => {
         if(this.onRequestChat) {
           this.onChat = true;
@@ -55,7 +54,7 @@ export class ChatLobbyComponent implements OnInit {
       this.currentRoomId
     );
 
-    this.lobbyService.requestChat(chatReq);
+    this.chatService.requestChat(chatReq);
 
     this.onRequestChat = true;
   }
@@ -73,13 +72,13 @@ export class ChatLobbyComponent implements OnInit {
       this.currentRoomId
     );
 
-    this.lobbyService.cancelChat(chatReq);
+    this.chatService.cancelChat(chatReq);
   }
 
   //대화에서 나가기
   exitChat(chatMsg: ChatMessage) {
     this.onChat = false;
 
-    this.lobbyService.exitRoom(chatMsg as ChatMessage);
+    this.chatService.exitRoom(chatMsg as ChatMessage);
   }
 }
