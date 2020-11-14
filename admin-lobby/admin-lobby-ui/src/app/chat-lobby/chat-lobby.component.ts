@@ -55,7 +55,7 @@ export class ChatLobbyComponent implements OnInit, OnDestroy {
 
     this.eventSubscriptions.push(
       this.chatService.totalAdvisorConnected$.subscribe((data: any) => {
-        this.connectedAdvisorList = JSON.parse(data);
+        this.connectedAdvisorList = data;
       })
     );
 

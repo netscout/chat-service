@@ -1,0 +1,19 @@
+version: '3'
+
+volumes:
+    mysql_dev: {}
+
+services:
+    db:
+        container_name: mysql
+        image: mysql
+        restart: always
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql_dev:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=votmdnjem
+            - MYSQL_DATABASE=Chat
+            - MYSQL_USER=user
+            - MYSQL_PASSWORD=votmdnjem

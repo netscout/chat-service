@@ -225,10 +225,11 @@ export const disconnect = async (socket) => {
 
 /**
  * 다른 상담원에게 채팅 요청 보내기
+ * @param {object} io socket.io 객체
  * @param {object} socket 현재 접속한 socket 객체
  * @param {object} req 요청 파라미터
  */
-export const chatRequest = async (socket, req) => {
+export const chatRequest = async (io, socket, req) => {
   sendResponse(socket, "chatRequest", req, true);
 
   if (req.toCustomer) {

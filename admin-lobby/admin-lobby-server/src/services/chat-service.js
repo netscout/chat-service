@@ -24,7 +24,7 @@ export const initChatService = (io) => {
     socket.on("publish", async (req) => {
       switch(req.type) {
         case "chatRequest":
-          await chat.chatRequest(socket, req);
+          await chat.chatRequest(io, socket, req);
           break;
         case "joinChat":
           chat.joinChat(socket, req);
