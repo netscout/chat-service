@@ -116,4 +116,4 @@ C:\Sources\chat-service\customer-lobby\customer-lobby-ui>npm i
 C:\Sources\chat-service\admin-lobby\admin-lobby-server>npm run dev
 ```
 
-브라우저에서 http://localhost:4201 으로 이동하여 __상담원__ 을 선택하고 로그인을 진행합니다.
+브라우저에서 http://localhost:4201 으로 이동하여 로그인을 진행합니다.
