@@ -1,14 +1,17 @@
 {
-  "name": "customer-lobby-server",
+  "name": "admin-lobby-server",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start_": "node ./bin/www",
-    "start": "nodemon ./bin/www --exec babel-node --preset @babel/preset-env"
+    "front": "cd ../admin-lobby-ui && ng serve",
+    "start": "nodemon ./src/bin/www --exec babel-node --preset @babel/preset-env",
+    "dev": "concurrently \"npm run start\" \"npm run front\""
   },
   "dependencies": {
     "@babel/polyfill": "^7.11.5",
     "bluebird": "^3.7.2",
+    "concurrently": "^5.3.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
@@ -23,6 +26,7 @@
     "@babel/cli": "^7.11.6",
     "@babel/core": "^7.11.6",
     "@babel/node": "^7.10.5",
-    "@babel/preset-env": "^7.11.5"
+    "@babel/preset-env": "^7.11.5",
+    "nodemon": "^2.0.7"
   }
 }

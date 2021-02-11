@@ -12,4 +12,4 @@ services:
     ports:
       - 6379:6379
     volumes: 
-      - redis_dev:/data    
+      - redis_dev:/data
