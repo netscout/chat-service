@@ -22,7 +22,18 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
-app.io.attach(server);
+//socket.io v3에서 추가 설정 필요
+//https://socket.io/docs/v3/handling-cors/
+//https://stackoverflow.com/questions/64725626/how-to-fix-400-error-bad-request-in-socket-io
+app.io.attach(server, {
+  cors: {
+    origin: `http://localhost:4201`,
+    methods: ["GET", "POST"],
+    transports: ['websocket', 'polling'],
+    credentials: true
+  },
+  allowEIO3: true
+});
 
 /**
  * Listen on provided port, on all network interfaces.

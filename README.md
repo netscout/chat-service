@@ -4,7 +4,7 @@
 
 고객-상담원, 상담원-상담원 간의 채팅을 지원합니다.
 
-Angular 11, node 14, kafka, redis 등을 활용하여 작성되었습니다.
+Angular 11, node 14, socket.io, kafka, redis 등을 활용하여 작성되었습니다.
 
 ## Kafka / Redis 실행
 
@@ -43,7 +43,7 @@ KAFKA_HOST=localhost:9092
 UI_APP_NAME=admin-lobby-ui
 KAFKA_TO_CUSTOMER_TOPIC=to-customer
 KAFKA_TO_ADMIN_TOPIC=to-admin
-KAFKA_GROUP=chat-group
+KAFKA_GROUP=chat-admin-group
 ```
 
 위 설정 파일에는 Kafka의 주소, 카프카를 통해 메세지를 주고 받은 토픽, 컨슈머 그룹 등의 정보가 작성되어 있습니다.
@@ -90,7 +90,7 @@ KAFKA_HOST=localhost:9092
 UI_APP_NAME=customer-lobby-ui
 KAFKA_TO_CUSTOMER_TOPIC=to-customer
 KAFKA_TO_ADMIN_TOPIC=to-admin
-KAFKA_GROUP=chat-group
+KAFKA_GROUP=chat-customer-group
 PORT=3001
 ```
 
@@ -106,7 +106,7 @@ C:\Sources>cd chat-service\customer-lobby\customer-lobby-server-ui
 C:\Sources\chat-service\customer-lobby\customer-lobby-ui>npm i
 ```
 
-### 상담원 채팅 서비스 실행
+### 고객 채팅 서비스 실행
 
 고객 채팅 서비스는 백엔드를 __npm run dev__ 커맨드를 실행하면 __concurrently__ 를 통해 프론트와 함께 실행하도록 구성되어 있습니다.
 
