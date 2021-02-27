@@ -1,5 +1,5 @@
 {
-  "name": "admin-lobby-server",
+  "name": "server-admin-lobby",
   "version": "0.0.0",
   "private": true,
   "scripts": {

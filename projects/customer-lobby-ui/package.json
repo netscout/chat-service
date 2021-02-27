@@ -1,9 +1,9 @@
 {
-  "name": "customer-lobby-ui",
+  "name": "ui-customer-lobby",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port 4201",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

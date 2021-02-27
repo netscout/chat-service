@@ -1,0 +1,17 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts":{
+    "start": "lerna exec yarn start",
+    "dev": "lerna exec yarn dev"
+  },
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "workspaces": [
+    "projects/*"
+  ],
+  "dependencies": {
+    "@angular/cli": "^11.2.2"
+  }
+}
