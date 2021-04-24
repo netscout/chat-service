@@ -6,7 +6,7 @@
     "start_": "node ./bin/www",
     "front": "cd ../admin-lobby-ui && ng serve",
     "start": "nodemon ./src/bin/www --exec babel-node --preset @babel/preset-env",
-    "dev": "concurrently \"npm run start\" \"npm run front\""
+    "dev": "node ./bin/www"
   },
   "dependencies": {
     "@babel/polyfill": "^7.11.5",
