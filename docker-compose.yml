@@ -6,7 +6,7 @@ volumes:
 services:
   redis:
     container_name: redis
-    image: redis:alpine
+    image: redis:5-alpine
     command: redis-server --requirepass votmdnjem
     restart: always
     ports:
