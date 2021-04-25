@@ -1,0 +1,48 @@
+WSL2에서 작업할 거면 소스 코드는 /mnt/c/ 여기에서 하지 마라아...
+엄청 느리다아....
+/usr/src/에 git으로 clone하고
+권한을 주기 위해서 clone한 폴더에
+sudo chown -R onlifecoding /usr/src/chat-service/
+위 명령으로 권한 부여
+
+쿠버네티스에 secret 추가
+kubectl create secret generic redis --from-literal=redis-password=votmdnjem
+
+WSL2에 oh my zsh 구성
+패키지 리포지토리 인덱스 업데이트
+sudo apt update
+
+git과 zsh 설치
+sudo apt install git zsh
+
+oh-my-zsh 설치
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+테마는 그냥 lambda
+
+그냥 bash쓰려면
+chsh -s /bin/bash
+
+다음으로는 angular앱을 도커에서 돌리기 위해서 node 서버 하나가 필요하다.
+https://medium.com/bb-tutorials-and-thoughts/dockerizing-angular-app-with-nodejs-backend-85e9d332335d
+https://medium.com/bb-tutorials-and-thoughts/how-to-develop-and-build-angular-app-with-nodejs-e24c40444421
+
+도커 이미지 만들기
+docker build -t netscout82/admin-lobby-server:latest .
+docker build -t netscout82/admin-lobby-ui:latest . -f admin-ui.Dockerfile
+
+wsl에서 git에 접근할 수 있는 엑세스 토큰 만들기
+https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token
+
+shell 스크립트로 도커 이미지 빌드하도록 구성하고, 레지스트리에 업로드하도록 설정.
+그리고 docker-compose.yaml을 kompose로 변환.
+
+
+k8s에 올리려면, 이미지 레지스트리에 등록해야 하는 듯.
+
+그리고 나서 k8s에 올리고...
+dapr로 돌려보는 거????
+아니면 간단한 앱 하나 만들어서 k8s에서 kafka로 통신하는 거 부터?
+
+docker-compose.yaml 로 부터 K8S 생성
+https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/
