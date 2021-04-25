@@ -4,7 +4,7 @@ import redis from "redis"
 bluebird.promisifyAll(redis)
 
 const client = redis.createClient({
-    host: '127.0.0.1',
+    host: 'redis',
     port: 6379
 });
 client.auth("votmdnjem")

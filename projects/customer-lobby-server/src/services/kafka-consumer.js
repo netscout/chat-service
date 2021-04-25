@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv'
 import { Kafka } from 'kafkajs'
 dotenv.config()
 
-const kafkaHost = process.env.KAFKA_HOST || 'localhost:9092';
+const kafkaHost = process.env.KAFKA_HOST || 'kafka:9092'; //'localhost:9092';
 
 const kafka = new Kafka({
     clientId: `customer_lobby_server`,

@@ -13,7 +13,10 @@ import { LoginComponent } from './login/login.component';
 
 const config: SocketIoConfig = {
   url: environment.baseUrl,
-  options: { autoConnect: false }
+  options: { 
+    autoConnect: false,
+    withCredentials: true
+  }
 };
 
 @NgModule({

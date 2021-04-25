@@ -15,6 +15,14 @@ RUN npm install
 # 앱 소스 추가
 COPY . .
 
+#ENV KAFKA_HOST localhost:9092
+ENV KAFKA_HOST kafka:9092
+ENV UI_APP_NAME customer-lobby-ui
+ENV KAFKA_TO_CUSTOMER_TOPIC to-customer
+ENV KAFKA_TO_ADMIN_TOPIC to-admin
+ENV KAFKA_GROUP chat-customer-group
+ENV PORT 3001
+
 EXPOSE 3001
 
 CMD [ "npm", "run", "dev" ]
