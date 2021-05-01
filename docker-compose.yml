@@ -1,7 +1,9 @@
-version: '3.0'
+version: '3.8'
 
 volumes: 
   redis_dev: {}
+  node_modules_admin-lobby-server:
+  node_modules_customer-lobby-server:
 
 services:
   redis:
@@ -14,24 +16,38 @@ services:
     volumes: 
       - redis_dev:/data
   admin-lobby-server:
+    container_name: admin-lobby-server
     build:
       context: ./projects/admin-lobby-server/
       dockerfile: ./Dockerfile
+      target: dev
     ports:
       - 3000:3000
+    volumes: 
+      - /usr/src/chat-service/projects/admin-lobby-server/:/usr/src/app/
+      - node_modules_admin-lobby-server:/usr/src/app/node_modules
+    command: npm run dev
   customer-lobby-server:
+    container_name: customer-lobby-server
     build:
       context: ./projects/customer-lobby-server/
       dockerfile: ./Dockerfile
+      target: dev
     ports:
       - 3001:3001
+    volumes: 
+      - /usr/src/chat-service/projects/customer-lobby-server/:/usr/src/app/
+      - node_modules_customer-lobby-server:/usr/src/app/node_modules
+    command: npm run dev
   admin-lobby-ui:
+    container_name: admin-lobby-ui
     build:
       context: ./projects
       dockerfile: ./admin-ui.Dockerfile
     ports:
       - 4200:4200
   customer-lobby-ui:
+    container_name: customer-lobby-ui
     build:
       context: ./projects
       dockerfile: ./customer-ui.Dockerfile

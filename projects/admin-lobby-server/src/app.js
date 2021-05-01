@@ -9,10 +9,6 @@ import socket from "socket.io"
 
 import v1Router from "./routes/v1";
 
-// import { getValue, setValue, getKeys, delKey, setMultiValues } from "./services/redis-connector"
-
-// import { kafkaSubscribe, kafkaDisconnect } from "./services/kafka-consumer"
-// import { kafkaPublish } from "./services/kafka-producer"
 import { initChatService } from "./services/chat-service";
 
 var app = express();
