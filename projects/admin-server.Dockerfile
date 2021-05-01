@@ -13,10 +13,8 @@ ENV KAFKA_GROUP chat-admin-group
 
 FROM base AS dev
 
-# 앱 의존성 설치
-# 가능한 경우(npm@5+) package.json과 package-lock.json을 모두 복사하기 위해
-# 와일드카드를 사용
-COPY package*.json ./
+# 개발 소스와 볼륨 연결이 되므로 복사 불필요.
+#COPY package*.json ./
 
 RUN npm install
 # 프로덕션을 위한 코드를 빌드하는 경우
@@ -24,9 +22,14 @@ RUN npm install
 
 FROM base AS prod
 
-# 앱 소스 추가
-COPY . .
+# 앱 의존성 설치
+# 가능한 경우(npm@5+) package.json과 package-lock.json을 모두 복사하기 위해
+# 와일드카드를 사용
+COPY package*.json ./
 
 RUN npm ci --only=production
+
+# 앱 소스 추가
+COPY . .
 
 # CMD [ "npm", "run", "dev" ]
