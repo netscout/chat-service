@@ -18,8 +18,8 @@ services:
   admin-lobby-server:
     container_name: admin-lobby-server
     build:
-      context: ./projects/admin-lobby-server/
-      dockerfile: ./Dockerfile
+      context: ./projects
+      dockerfile: ./admin-server.Dockerfile
       target: dev
     ports:
       - 3000:3000
@@ -30,8 +30,8 @@ services:
   customer-lobby-server:
     container_name: customer-lobby-server
     build:
-      context: ./projects/customer-lobby-server/
-      dockerfile: ./Dockerfile
+      context: ./projects
+      dockerfile: ./customer-server.Dockerfile
       target: dev
     ports:
       - 3001:3001
