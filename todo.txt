@@ -46,3 +46,12 @@ dapr로 돌려보는 거????
 
 docker-compose.yaml 로 부터 K8S 생성
 https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/
+
+-----------------------
+
+이제 해야 할 게...
+앵귤러 컨테이너 개발 설정을 하자.
+
+이렇게 하고 다음으로 배포용 컨테이너 설정까지 하면 일단은 정리.
+
+그 다음에 k8s, DAPR로 넘어갑시다... 천천히...
