@@ -1,7 +1,11 @@
-version: '3.0'
+version: '3.8'
 
 volumes: 
   redis_dev: {}
+  node_modules_admin-lobby-server:
+  node_modules_customer-lobby-server:
+  node_modules_admin-lobby-ui:
+  node_modules_customer-lobby-ui:
 
 services:
   redis:
@@ -14,29 +18,57 @@ services:
     volumes: 
       - redis_dev:/data
   admin-lobby-server:
+    container_name: admin-lobby-server
     build:
-      context: ./projects/admin-lobby-server/
-      dockerfile: ./Dockerfile
+      context: ./projects
+      dockerfile: ./admin-server.Dockerfile
+      target: dev
+    image: admin-lobby-server:latest
     ports:
       - 3000:3000
+    volumes: 
+      - /usr/src/chat-service/projects/admin-lobby-server/:/usr/src/app/
+      - node_modules_admin-lobby-server:/usr/src/app/node_modules
+    command: npm run dev
   customer-lobby-server:
+    container_name: customer-lobby-server
     build:
-      context: ./projects/customer-lobby-server/
-      dockerfile: ./Dockerfile
+      context: ./projects
+      dockerfile: ./customer-server.Dockerfile
+      target: dev
+    image: customer-lobby-server:latest
     ports:
       - 3001:3001
+    volumes: 
+      - /usr/src/chat-service/projects/customer-lobby-server/:/usr/src/app/
+      - node_modules_customer-lobby-server:/usr/src/app/node_modules
+    command: npm run dev
   admin-lobby-ui:
+    container_name: admin-lobby-ui
     build:
       context: ./projects
       dockerfile: ./admin-ui.Dockerfile
+      target: dev
+    image: admin-lobby-ui:latest
     ports:
       - 4200:4200
+    volumes: 
+      - /usr/src/chat-service/projects/admin-lobby-ui/:/usr/src/app/
+      - node_modules_admin-lobby-ui:/usr/src/app/node_modules
+    command: npm start
   customer-lobby-ui:
+    container_name: customer-lobby-ui
     build:
       context: ./projects
       dockerfile: ./customer-ui.Dockerfile
+      target: dev
+    image: customer-lobby-ui:latest
     ports:
       - 4201:4201
+    volumes: 
+      - /usr/src/chat-service/projects/customer-lobby-ui/:/usr/src/app/
+      - node_modules_customer-lobby-ui:/usr/src/app/node_modules
+    command: npm start
   zookeeper:
     image: wurstmeister/zookeeper:latest
     ports:

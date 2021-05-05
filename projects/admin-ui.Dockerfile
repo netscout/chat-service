@@ -1,4 +1,18 @@
-FROM node:14 AS ui-build
+FROM node:14 AS base
+# 앱 디렉터리 생성
+WORKDIR /usr/src/app
+
+ENV PORT 4200
+
+EXPOSE 4200
+
+FROM base AS dev
+
+COPY ./admin-lobby-ui/package*.json .
+
+RUN npm install
+
+FROM base AS ui-build
 # 앱 디렉터리 생성
 WORKDIR /usr/src/app
 
@@ -7,7 +21,7 @@ COPY ./admin-lobby-ui ./ui
 #package.json에 포함되어 있어서 이거는 필요 없을 듯. npm install @angluar/cli
 RUN cd ui && npm install && npm run build
 
-FROM node:14 AS server-build
+FROM base AS server-build
 
 # 앱 디렉터리 생성
 WORKDIR /usr/src/app
@@ -25,9 +39,5 @@ RUN npm install
 
 # 앱 소스 추가
 COPY ./ui-server .
-
-ENV PORT 4200
-
-EXPOSE 4200
 
 CMD [ "npm", "start" ]

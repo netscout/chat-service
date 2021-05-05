@@ -3,11 +3,14 @@ import redis from "redis"
 
 bluebird.promisifyAll(redis)
 
+const redis_host = process.env.REDIS_HOST || "localhost"
+
 const client = redis.createClient({
-    host: 'redis',
+    host: redis_host,
     port: 6379
 });
-client.auth("votmdnjem")
+const pwd = process.env.REDIS_PWD || "votmdnjem"
+client.auth(pwd)
 
 client.on('connect', function() {
     console.log('Redis client connected')

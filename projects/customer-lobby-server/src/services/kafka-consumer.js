@@ -3,9 +3,10 @@ import { Kafka } from 'kafkajs'
 dotenv.config()
 
 const kafkaHost = process.env.KAFKA_HOST || 'kafka:9092'; //'localhost:9092';
+const clientId = process.env.KAFKA_CLIENT_ID || 'admin_lobby_server';
 
 const kafka = new Kafka({
-    clientId: `customer_lobby_server`,
+    clientId: clientId,
     brokers: [kafkaHost]
 })
 
