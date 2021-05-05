@@ -13,11 +13,11 @@ ENV UI_APP_NAME admin-lobby-ui
 ENV KAFKA_TO_CUSTOMER_TOPIC to-customer
 ENV KAFKA_TO_ADMIN_TOPIC to-admin
 ENV KAFKA_GROUP chat-admin-group
+ENV FRONT_URL http://localhost:4200
 
 FROM base AS dev
 
-# 개발 소스와 볼륨 연결이 되므로 복사 불필요.
-#COPY package*.json ./
+COPY ./admin-lobby-server/package*.json ./
 
 RUN npm install
 # 프로덕션을 위한 코드를 빌드하는 경우

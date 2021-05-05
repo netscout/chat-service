@@ -14,11 +14,11 @@ ENV KAFKA_TO_CUSTOMER_TOPIC to-customer
 ENV KAFKA_TO_ADMIN_TOPIC to-admin
 ENV KAFKA_GROUP chat-customer-group
 ENV PORT 3001
+ENV FRONT_URL http://localhost:4201
 
 FROM base AS dev
 
-# 개발 소스와 볼륨 연결이 되므로 복사 불필요.
-#COPY package*.json ./
+COPY ./customer-lobby-server/package*.json ./
 
 RUN npm install
 # 프로덕션을 위한 코드를 빌드하는 경우

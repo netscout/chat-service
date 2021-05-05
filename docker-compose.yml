@@ -4,6 +4,8 @@ volumes:
   redis_dev: {}
   node_modules_admin-lobby-server:
   node_modules_customer-lobby-server:
+  node_modules_admin-lobby-ui:
+  node_modules_customer-lobby-ui:
 
 services:
   redis:
@@ -21,6 +23,7 @@ services:
       context: ./projects
       dockerfile: ./admin-server.Dockerfile
       target: dev
+    image: admin-lobby-server:latest
     ports:
       - 3000:3000
     volumes: 
@@ -33,6 +36,7 @@ services:
       context: ./projects
       dockerfile: ./customer-server.Dockerfile
       target: dev
+    image: customer-lobby-server:latest
     ports:
       - 3001:3001
     volumes: 
@@ -44,15 +48,27 @@ services:
     build:
       context: ./projects
       dockerfile: ./admin-ui.Dockerfile
+      target: dev
+    image: admin-lobby-ui:latest
     ports:
       - 4200:4200
+    volumes: 
+      - /usr/src/chat-service/projects/admin-lobby-ui/:/usr/src/app/
+      - node_modules_admin-lobby-ui:/usr/src/app/node_modules
+    command: npm start
   customer-lobby-ui:
     container_name: customer-lobby-ui
     build:
       context: ./projects
       dockerfile: ./customer-ui.Dockerfile
+      target: dev
+    image: customer-lobby-ui:latest
     ports:
       - 4201:4201
+    volumes: 
+      - /usr/src/chat-service/projects/customer-lobby-ui/:/usr/src/app/
+      - node_modules_customer-lobby-ui:/usr/src/app/node_modules
+    command: npm start
   zookeeper:
     image: wurstmeister/zookeeper:latest
     ports:
