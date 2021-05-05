@@ -32,6 +32,10 @@ sudo chown onlifecoding node_modules
 package-lock.json 파일만 생성 / 업데이트
 npm i --package-lock-only
 
+git master -> main 변경하기
+https://stevenmortimer.com/5-steps-to-change-github-default-branch-from-master-to-main/
+
+
 다음으로는 angular앱을 도커에서 돌리기 위해서 node 서버 하나가 필요하다.
 https://medium.com/bb-tutorials-and-thoughts/dockerizing-angular-app-with-nodejs-backend-85e9d332335d
 https://medium.com/bb-tutorials-and-thoughts/how-to-develop-and-build-angular-app-with-nodejs-e24c40444421
