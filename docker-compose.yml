@@ -2,6 +2,7 @@ version: '3.8'
 
 volumes: 
   redis_dev: {}
+  # 개발을 위해 로컬의 소스 폴더와 볼륨 연결시 각 서비스의 node_modules 폴더를 따로 저장해둘 도커 볼륨
   node_modules_admin-lobby-server:
   node_modules_customer-lobby-server:
   node_modules_admin-lobby-ui:
@@ -18,18 +19,18 @@ services:
     volumes: 
       - redis_dev:/data
   admin-lobby-server:
-    container_name: admin-lobby-server
+    container_name: admin-lobby-server # 실행될 컨테이터 인스턴스 이름
     build:
-      context: ./projects
-      dockerfile: ./admin-server.Dockerfile
-      target: dev
-    image: admin-lobby-server:latest
+      context: ./projects # 빌드의 기준이 될 폴더
+      dockerfile: ./admin-server.Dockerfile # 빌드에 사용될 도커 파일
+      target: dev # 빌드에 사용될 도커 파일의 스테이지
+    image: admin-lobby-server:latest # 빌드될 이미지의 이름
     ports:
-      - 3000:3000
+      - 3000:3000 # 호스트 컴퓨터와 포트와 컨테이너의 포드 연결
     volumes: 
-      - /usr/src/chat-service/projects/admin-lobby-server/:/usr/src/app/
-      - node_modules_admin-lobby-server:/usr/src/app/node_modules
-    command: npm run dev
+      - /usr/src/chat-service/projects/admin-lobby-server/:/usr/src/app/ # 로컬의 소스를 컨테이너에 연결
+      - node_modules_admin-lobby-server:/usr/src/app/node_modules # 컨테이너의 node_modules 폴더를 도커 볼륨에 연결
+    command: npm run dev # nodemon 으로 소스 변경 감지
   customer-lobby-server:
     container_name: customer-lobby-server
     build:
@@ -55,7 +56,7 @@ services:
     volumes: 
       - /usr/src/chat-service/projects/admin-lobby-ui/:/usr/src/app/
       - node_modules_admin-lobby-ui:/usr/src/app/node_modules
-    command: npm start
+    command: npm start # ng serve 로 소스 변경 감지
   customer-lobby-ui:
     container_name: customer-lobby-ui
     build:
