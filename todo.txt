@@ -87,4 +87,8 @@ kubectl delete -f k8s.yaml
 현재 각 서비스가 ClusterIP 형태로 되어 있는데, 이거는 클러스터안에서만 접근이 가능하다.
 NodePort 형태로 노출을 시켜야 하는데.....
 
+요런거 확인해보자.
+
+https://kubernetes.io/ko/docs/tutorials/kubernetes-basics/expose/expose-intro/
+
 그 다음에 k8s, DAPR로 넘어갑시다... 천천히...
