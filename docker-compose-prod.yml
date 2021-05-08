@@ -19,56 +19,44 @@ services:
     volumes: 
       - redis_dev:/data
   admin-lobby-server:
-    container_name: admin-lobby-server-dev # 실행될 컨테이터 인스턴스 이름
+    container_name: admin-lobby-server # 실행될 컨테이터 인스턴스 이름
     build:
       context: ./projects # 빌드의 기준이 될 폴더
       dockerfile: ./admin-server.Dockerfile # 빌드에 사용될 도커 파일
-      target: dev # 빌드에 사용될 도커 파일의 스테이지
-    image: admin-lobby-server-dev:latest # 빌드될 이미지의 이름
+      target: prod # 빌드에 사용될 도커 파일의 스테이지
+    image: admin-lobby-server:latest # 빌드될 이미지의 이름
     ports:
       - 3000:3000 # 호스트 컴퓨터와 포트와 컨테이너의 포드 연결
-    volumes: 
-      - /usr/src/chat-service/projects/admin-lobby-server/:/usr/src/app/ # 로컬의 소스를 컨테이너에 연결
-      - node_modules_admin-lobby-server:/usr/src/app/node_modules # 컨테이너의 node_modules 폴더를 도커 볼륨에 연결
-    command: npm run dev # nodemon 으로 소스 변경 감지
+    command: npm start
   customer-lobby-server:
-    container_name: customer-lobby-server-dev
+    container_name: customer-lobby-server
     build:
       context: ./projects
       dockerfile: ./customer-server.Dockerfile
-      target: dev
-    image: customer-lobby-server-dev:latest
+      target: prod
+    image: customer-lobby-server:latest
     ports:
       - 3001:3001
-    volumes: 
-      - /usr/src/chat-service/projects/customer-lobby-server/:/usr/src/app/
-      - node_modules_customer-lobby-server:/usr/src/app/node_modules
-    command: npm run dev
+    command: npm start
   admin-lobby-ui:
-    container_name: admin-lobby-ui-dev
+    container_name: admin-lobby-ui
     build:
       context: ./projects
       dockerfile: ./admin-ui.Dockerfile
-      target: dev
-    image: admin-lobby-ui-dev:latest
+      target: prod
+    image: admin-lobby-ui:latest
     ports:
       - 4200:4200
-    volumes: 
-      - /usr/src/chat-service/projects/admin-lobby-ui/:/usr/src/app/
-      - node_modules_admin-lobby-ui:/usr/src/app/node_modules
-    command: npm start # ng serve 로 소스 변경 감지
+    command: npm start
   customer-lobby-ui:
-    container_name: customer-lobby-ui-dev
+    container_name: customer-lobby-ui
     build:
       context: ./projects
       dockerfile: ./customer-ui.Dockerfile
-      target: dev
-    image: customer-lobby-ui-dev:latest
+      target: prod
+    image: customer-lobby-ui:latest
     ports:
       - 4201:4201
-    volumes: 
-      - /usr/src/chat-service/projects/customer-lobby-ui/:/usr/src/app/
-      - node_modules_customer-lobby-ui:/usr/src/app/node_modules
     command: npm start
   zookeeper:
     image: wurstmeister/zookeeper:latest

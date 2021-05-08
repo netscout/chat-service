@@ -21,7 +21,7 @@ COPY ./admin-lobby-ui ./ui
 #package.json에 포함되어 있어서 이거는 필요 없을 듯. npm install @angluar/cli
 RUN cd ui && npm install && npm run build
 
-FROM base AS server-build
+FROM base AS prod
 
 # 앱 디렉터리 생성
 WORKDIR /usr/src/app
@@ -39,5 +39,3 @@ RUN npm install
 
 # 앱 소스 추가
 COPY ./ui-server .
-
-CMD [ "npm", "start" ]
