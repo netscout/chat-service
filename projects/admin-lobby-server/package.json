@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start_": "node ./bin/www",
-    "front": "cd ../admin-lobby-ui && ng serve",
-    "start": "nodemon ./src/bin/www --exec babel-node --preset @babel/preset-env",
-    "dev": "nodemon ./src/bin/www --exec babel-node --preset @babel/preset-env"
+    "clean": "rm -rf dist && mkdir dist",
+    "build": "npm run clean && babel src -d dist",
+    "start": "node ./dist/bin/www.js",
+    "dev": "nodemon ./src/bin/www.js --exec babel-node --preset @babel/preset-env"
   },
   "dependencies": {
     "@babel/polyfill": "^7.11.5",
