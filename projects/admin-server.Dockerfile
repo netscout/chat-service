@@ -31,6 +31,8 @@ RUN npm install && npm run build
 # TODO: 배포 설정 확인 필요
 FROM base AS prod
 
+ENV FRONT_URL http://admin-lobby-ui:4200
+
 RUN npm ci --only=production
 
 # 앱 소스 추가

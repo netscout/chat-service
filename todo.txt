@@ -91,4 +91,15 @@ NodePort 형태로 노출을 시켜야 하는데.....
 
 https://kubernetes.io/ko/docs/tutorials/kubernetes-basics/expose/expose-intro/
 
+----------------------
+
+일단 NodePort까지 적용을 해서 프론트는 접속이 된다.
+그런데 프론트에서 서버로 연결이 되지 않는다.
+이거는 아마도 서비스 이름으로 참조해야 되서 그런거 같다.
+그러니까 프론트에서 서버로 보낼 때, localhost:3000이 아니고 admin-lobby-server:3000 이런식으로 보내야 할 듯.
+
+그리고 서버에서도 cors 할 때, admin-lobby-ui 이런식으로 해야 하나...?
+
+이 부분은 좀 더 고민해보자....-_-;;;
+
 그 다음에 k8s, DAPR로 넘어갑시다... 천천히...

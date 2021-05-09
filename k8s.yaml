@@ -34,8 +34,10 @@ items:
         - name: "4200"
           port: 4200
           targetPort: 4200
+          nodePort: 31000
       selector:
         io.kompose.service: admin-lobby-ui
+      type: NodePort
     status:
       loadBalancer: {}
   - apiVersion: v1
@@ -72,8 +74,10 @@ items:
         - name: "4201"
           port: 4201
           targetPort: 4201
+          nodePort: 31001
       selector:
         io.kompose.service: customer-lobby-ui
+      type: NodePort
     status:
       loadBalancer: {}
   - apiVersion: v1
@@ -164,6 +168,7 @@ items:
                 - start
               image: admin-lobby-server:latest
               name: admin-lobby-server
+              imagePullPolicy: Never
               ports:
                 - containerPort: 3000
               resources: {}
@@ -200,6 +205,7 @@ items:
                 - start
               image: admin-lobby-ui:latest
               name: admin-lobby-ui
+              imagePullPolicy: Never
               ports:
                 - containerPort: 4200
               resources: {}
@@ -236,6 +242,7 @@ items:
                 - start
               image: customer-lobby-server:latest
               name: customer-lobby-server
+              imagePullPolicy: Never
               ports:
                 - containerPort: 3001
               resources: {}
@@ -272,6 +279,7 @@ items:
                 - start
               image: customer-lobby-ui:latest
               name: customer-lobby-ui
+              imagePullPolicy: Never
               ports:
                 - containerPort: 4201
               resources: {}
@@ -308,6 +316,8 @@ items:
                   value: kafka
                 - name: KAFKA_ZOOKEEPER_CONNECT
                   value: zookeeper:2181
+                - name: KAFKA_PORT
+                  value: "9092"
               image: wurstmeister/kafka:latest
               name: kafka
               ports:
