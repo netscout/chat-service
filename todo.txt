@@ -100,6 +100,15 @@ https://kubernetes.io/ko/docs/tutorials/kubernetes-basics/expose/expose-intro/
 
 ----------------------
 
+git corruption 처리 방법
+https://davemateer.com/2021/01/29/git-corruption-with-wsl2
+
+# backup the repo first!
+find .git/objects/ -type f -empty | xargs rm
+git fetch -p
+git fsck --full
+
+
 자 일단... 날아간건 날아간 거고...
 
 다시 해보는 게,
