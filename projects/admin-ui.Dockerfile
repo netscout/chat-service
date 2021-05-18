@@ -19,7 +19,7 @@ WORKDIR /usr/src/app
 COPY ./admin-lobby-ui ./ui
 
 #package.json에 포함되어 있어서 이거는 필요 없을 듯. npm install @angluar/cli
-RUN cd ui && npm install && npm run build
+RUN cd ui && npm install && npm run build-staging
 
 FROM base AS prod
 

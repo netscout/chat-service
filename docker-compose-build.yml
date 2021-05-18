@@ -1,0 +1,47 @@
+version: '3'
+
+volumes: 
+  redis_dev: {}
+
+services:
+  redis:
+    container_name: redis
+    image: redis:5-alpine
+    command: redis-server --requirepass votmdnjem
+    restart: always
+    ports:
+      - 6379:6379
+    volumes: 
+      - redis_dev:/data
+  admin-lobby-server:
+    image: admin-lobby-server:latest # 빌드될 이미지의 이름
+    ports:
+      - 3000:3000 # 호스트 컴퓨터와 포트와 컨테이너의 포드 연결
+    command: npm start
+  customer-lobby-server:
+    image: customer-lobby-server:latest
+    ports:
+      - 3001:3001
+    command: npm start
+  admin-lobby-ui:
+    image: admin-lobby-ui:latest
+    ports:
+      - 4200:4200
+    command: npm start
+  customer-lobby-ui:
+    image: customer-lobby-ui:latest
+    ports:
+      - 4201:4201
+    command: npm start
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      #KAFKA_CREATE_TOPICS: "sample:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
