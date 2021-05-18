@@ -15,31 +15,33 @@ items:
         - name: "3000"
           port: 3000
           targetPort: 3000
+          nodePort: 30000
       selector:
         io.kompose.service: admin-lobby-server
-    status:
-      loadBalancer: {}
-  - apiVersion: v1
-    kind: Service
-    metadata:
-      annotations:
-        kompose.cmd: kompose convert -f docker-compose-build.yml -o ./k8s
-        kompose.version: 1.22.0 (955b78124)
-      creationTimestamp: null
-      labels:
-        io.kompose.service: admin-lobby-ui
-      name: admin-lobby-ui
-    spec:
-      ports:
-        - name: "4200"
-          port: 4200
-          targetPort: 4200
-          nodePort: 31000
-      selector:
-        io.kompose.service: admin-lobby-ui
       type: NodePort
     status:
       loadBalancer: {}
+  # - apiVersion: v1
+  #   kind: Service
+  #   metadata:
+  #     annotations:
+  #       kompose.cmd: kompose convert -f docker-compose-build.yml -o ./k8s
+  #       kompose.version: 1.22.0 (955b78124)
+  #     creationTimestamp: null
+  #     labels:
+  #       io.kompose.service: admin-lobby-ui
+  #     name: admin-lobby-ui
+  #   spec:
+  #     ports:
+  #       - name: "4200"
+  #         port: 4200
+  #         targetPort: 4200
+  #         nodePort: 31000
+  #     selector:
+  #       io.kompose.service: admin-lobby-ui
+  #     type: NodePort
+  #   status:
+  #     loadBalancer: {}
   - apiVersion: v1
     kind: Service
     metadata:
@@ -55,31 +57,33 @@ items:
         - name: "3001"
           port: 3001
           targetPort: 3001
+          nodePort: 30001
       selector:
         io.kompose.service: customer-lobby-server
-    status:
-      loadBalancer: {}
-  - apiVersion: v1
-    kind: Service
-    metadata:
-      annotations:
-        kompose.cmd: kompose convert -f docker-compose-build.yml -o ./k8s
-        kompose.version: 1.22.0 (955b78124)
-      creationTimestamp: null
-      labels:
-        io.kompose.service: customer-lobby-ui
-      name: customer-lobby-ui
-    spec:
-      ports:
-        - name: "4201"
-          port: 4201
-          targetPort: 4201
-          nodePort: 31001
-      selector:
-        io.kompose.service: customer-lobby-ui
       type: NodePort
     status:
       loadBalancer: {}
+  # - apiVersion: v1
+  #   kind: Service
+  #   metadata:
+  #     annotations:
+  #       kompose.cmd: kompose convert -f docker-compose-build.yml -o ./k8s
+  #       kompose.version: 1.22.0 (955b78124)
+  #     creationTimestamp: null
+  #     labels:
+  #       io.kompose.service: customer-lobby-ui
+  #     name: customer-lobby-ui
+  #   spec:
+  #     ports:
+  #       - name: "4201"
+  #         port: 4201
+  #         targetPort: 4201
+  #         nodePort: 31001
+  #     selector:
+  #       io.kompose.service: customer-lobby-ui
+  #     type: NodePort
+  #   status:
+  #     loadBalancer: {}
   - apiVersion: v1
     kind: Service
     metadata:
@@ -166,7 +170,7 @@ items:
             - args:
                 - npm
                 - start
-              image: admin-lobby-server:latest
+              image: admin-lobby-server:0.6
               name: admin-lobby-server
               imagePullPolicy: Never
               ports:
@@ -174,43 +178,43 @@ items:
               resources: {}
           restartPolicy: Always
     status: {}
-  - apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      annotations:
-        kompose.cmd: kompose convert -f docker-compose-build.yml -o ./k8s
-        kompose.version: 1.22.0 (955b78124)
-      creationTimestamp: null
-      labels:
-        io.kompose.service: admin-lobby-ui
-      name: admin-lobby-ui
-    spec:
-      replicas: 1
-      selector:
-        matchLabels:
-          io.kompose.service: admin-lobby-ui
-      strategy: {}
-      template:
-        metadata:
-          annotations:
-            kompose.cmd: kompose convert -f docker-compose-build.yml -o ./k8s
-            kompose.version: 1.22.0 (955b78124)
-          creationTimestamp: null
-          labels:
-            io.kompose.service: admin-lobby-ui
-        spec:
-          containers:
-            - args:
-                - npm
-                - start
-              image: admin-lobby-ui:latest
-              name: admin-lobby-ui
-              imagePullPolicy: Never
-              ports:
-                - containerPort: 4200
-              resources: {}
-          restartPolicy: Always
-    status: {}
+  # - apiVersion: apps/v1
+  #   kind: Deployment
+  #   metadata:
+  #     annotations:
+  #       kompose.cmd: kompose convert -f docker-compose-build.yml -o ./k8s
+  #       kompose.version: 1.22.0 (955b78124)
+  #     creationTimestamp: null
+  #     labels:
+  #       io.kompose.service: admin-lobby-ui
+  #     name: admin-lobby-ui
+  #   spec:
+  #     replicas: 1
+  #     selector:
+  #       matchLabels:
+  #         io.kompose.service: admin-lobby-ui
+  #     strategy: {}
+  #     template:
+  #       metadata:
+  #         annotations:
+  #           kompose.cmd: kompose convert -f docker-compose-build.yml -o ./k8s
+  #           kompose.version: 1.22.0 (955b78124)
+  #         creationTimestamp: null
+  #         labels:
+  #           io.kompose.service: admin-lobby-ui
+  #       spec:
+  #         containers:
+  #           - args:
+  #               - npm
+  #               - start
+  #             image: admin-lobby-ui:0.4
+  #             name: admin-lobby-ui
+  #             imagePullPolicy: Never
+  #             ports:
+  #               - containerPort: 4200
+  #             resources: {}
+  #         restartPolicy: Always
+  #   status: {}
   - apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -240,7 +244,7 @@ items:
             - args:
                 - npm
                 - start
-              image: customer-lobby-server:latest
+              image: customer-lobby-server:0.6
               name: customer-lobby-server
               imagePullPolicy: Never
               ports:
@@ -248,43 +252,43 @@ items:
               resources: {}
           restartPolicy: Always
     status: {}
-  - apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      annotations:
-        kompose.cmd: kompose convert -f docker-compose-build.yml -o ./k8s
-        kompose.version: 1.22.0 (955b78124)
-      creationTimestamp: null
-      labels:
-        io.kompose.service: customer-lobby-ui
-      name: customer-lobby-ui
-    spec:
-      replicas: 1
-      selector:
-        matchLabels:
-          io.kompose.service: customer-lobby-ui
-      strategy: {}
-      template:
-        metadata:
-          annotations:
-            kompose.cmd: kompose convert -f docker-compose-build.yml -o ./k8s
-            kompose.version: 1.22.0 (955b78124)
-          creationTimestamp: null
-          labels:
-            io.kompose.service: customer-lobby-ui
-        spec:
-          containers:
-            - args:
-                - npm
-                - start
-              image: customer-lobby-ui:latest
-              name: customer-lobby-ui
-              imagePullPolicy: Never
-              ports:
-                - containerPort: 4201
-              resources: {}
-          restartPolicy: Always
-    status: {}
+  # - apiVersion: apps/v1
+  #   kind: Deployment
+  #   metadata:
+  #     annotations:
+  #       kompose.cmd: kompose convert -f docker-compose-build.yml -o ./k8s
+  #       kompose.version: 1.22.0 (955b78124)
+  #     creationTimestamp: null
+  #     labels:
+  #       io.kompose.service: customer-lobby-ui
+  #     name: customer-lobby-ui
+  #   spec:
+  #     replicas: 1
+  #     selector:
+  #       matchLabels:
+  #         io.kompose.service: customer-lobby-ui
+  #     strategy: {}
+  #     template:
+  #       metadata:
+  #         annotations:
+  #           kompose.cmd: kompose convert -f docker-compose-build.yml -o ./k8s
+  #           kompose.version: 1.22.0 (955b78124)
+  #         creationTimestamp: null
+  #         labels:
+  #           io.kompose.service: customer-lobby-ui
+  #       spec:
+  #         containers:
+  #           - args:
+  #               - npm
+  #               - start
+  #             image: customer-lobby-ui:0.4
+  #             name: customer-lobby-ui
+  #             imagePullPolicy: Never
+  #             ports:
+  #               - containerPort: 4201
+  #             resources: {}
+  #         restartPolicy: Always
+  #   status: {}
   - apiVersion: apps/v1
     kind: Deployment
     metadata:

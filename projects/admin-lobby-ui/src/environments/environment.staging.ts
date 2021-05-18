@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: "http://admin-lobby-server:3000"
+  baseUrl: "http://localhost:30000"
 };

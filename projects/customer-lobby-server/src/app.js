@@ -18,14 +18,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 //배포될 angular앱 경로 설정
-app.use(express.static(`${process.cwd()}/ui/dist/${process.env.UI_APP_NAME}/`))
+app.use(express.static(`${process.cwd()}/ui/dist/`))
 // app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/api/v1", v1Router);
 
 //배포될 angular앱 메인 페이지
 app.get('/', (req, res) => {
-    res.sendFile(`${process.cwd()}/ui/dist/${process.env.UI_APP_NAME}/index.html`)
+    res.sendFile(`${process.cwd()}/ui/dist/index.html`)
 })
 
 //------------------------socket.io설정----------------------
