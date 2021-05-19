@@ -55,6 +55,8 @@ Angular 11, node 14, socket.io, kafka, redis 등을 활용하여 작성되었으
 > docker-compose up -d
 ```
 
+설정이 완료되면, 2개의 브라우저를 열어서 각각 http://localhost:4200, http://localhost:4201 으로 접속하여 채팅 테스트를 진행할 수 있습니다.
+
 ## 쿠버네티스로 로컬에서 운영환경 테스트
 
 쿠버네티스 환경 설정을 위한 __k8s.yaml__ 파일은 __docker-compose-build.yaml__ 파일에서 [Kompose](https://kompose.io/)를 통해 변환 및 생성되었으며, 다음 명령과 같이 __Kompose__ 를 활용할 수 있습니다.
@@ -68,6 +70,8 @@ Angular 11, node 14, socket.io, kafka, redis 등을 활용하여 작성되었으
 ```bash
 > kubectl apply -f k8s.yaml
 ```
+
+설정이 완료되면, 2개의 브라우저를 열어서 각각 http://localhost:30000, http://localhost:30001 으로 접속하여 채팅 테스트를 진행할 수 있습니다.
 
 운영 환경 관리는 __kubectl__ 을 직접사용하는 것 보다는 [k9s](https://github.com/derailed/k9s)사용을 추천합니다.
 
