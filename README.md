@@ -6,7 +6,90 @@
 
 Angular 11, node 14, socket.io, kafka, redis 등을 활용하여 작성되었으며, lerna와 yarn workspace를 통해 모노리포 구조로 작성되었습니다.
 
-## Kafka / Redis 실행
+이 프로젝트를 실행하는 방법은 크게 3가지가 있습니다.
+
+1. lerna를 통한 모노리포 실행
+1. docker-compose를 통한 개발 환경 실행
+1. 쿠버네티스로 로컬에서 운영환경 테스트
+
+개발 환경으로는 docker-compose를 통해 실행하는 것을 추천합니다.
+
+## 폴더 구조
+
+```
+📦chat-service 
+ ┣ 📂IdentityService   # 미완성
+ ┣ 📂components   # Dapr 컴포넌트(미완성)
+ ┣ 📂kafka-stack-docker-compose   # kafka 단독 실행을 위한 docker-compose 파일
+ ┣ 📂projects   # 프로젝트 폴더
+ ┃ ┣ 📂admin-lobby-server   # 상담원 채팅 로비 서버
+ ┃ ┣ 📂admin-lobby-ui   # 상담원 채팅 로비 UI
+ ┃ ┣ 📂customer-lobby-server   # 고객 채팅 로비 서버
+ ┃ ┣ 📂customer-lobby-ui   # 고객 채팅 로비 UI
+ ┃ ┣ 📂ui-server   # UI 호스팅을 위한 서버(사용하지 않음)
+ ┃ ┣ 📜.dockerignore   # dockerignore 파일
+ ┃ ┣ 📜admin-server.Dockerfile   # 상담원 채팅 로비 서버 Dockerfile
+ ┃ ┣ 📜admin-ui.Dockerfile   # 상담원 채팅 로비 UI Dockerfile
+ ┃ ┣ 📜customer-server.Dockerfile   # 고객 채팅 로비 서버 Dockerfile
+ ┃ ┗ 📜customer-ui.Dockerfile   # 고객 채팅 로비 UI Dockerfile
+ ┣ 📜.gitattributes
+ ┣ 📜.gitignore
+ ┣ 📜LICENSE
+ ┣ 📜README.md
+ ┣ 📜create-docker-image.sh
+ ┣ 📜docker-compose-build.yaml   # Kompose로 변환을 위해 사용한 docker-compose 파일
+ ┣ 📜docker-compose-prod.yaml   # 배포용 이미지 생성을 위한 docker-compose 파일
+ ┣ 📜docker-compose.yaml   # 개발 환경 실행을 위한 docker-compose 파일
+ ┣ 📜k8s.yaml   # 쿠버네티스 환경 실행을 위한 설정 파일
+ ┣ 📜lerna.json   # lerna 설정 파일
+ ┣ 📜package.json
+ ┣ 📜todo.txt
+ ┗ 📜yarn.lock
+```
+
+## docker-compose로 개발환경 실행
+
+다음 명령어를 통해 개발 환경을 실행합니다.
+
+```bash
+> docker-compose up -d
+```
+
+## 쿠버네티스로 로컬에서 운영환경 테스트
+
+쿠버네티스 환경 설정을 위한 __k8s.yaml__ 파일은 __docker-compose-build.yaml__ 파일에서 [Kompose](https://kompose.io/)를 통해 변환 및 생성되었으며, 다음 명령과 같이 __Kompose__ 를 활용할 수 있습니다.
+
+```base
+> kompose convert -f docker-compose-build.yaml -o ./k8s.yaml
+```
+
+다음 명령어를 통해 운영 환경을 실행합니다.
+
+```bash
+> kubectl apply -f k8s.yaml
+```
+
+운영 환경 관리는 __kubectl__ 을 직접사용하는 것 보다는 [k9s](https://github.com/derailed/k9s)사용을 추천합니다.
+
+### 쿠버네티스 이미지 업데이트
+
+변경사항을 적용한 뒤 새 이미지를 실행하려면, __docker-compose-prod.yaml__ 파일의 각 이미지 버전을 업데이트 한다.(ex: 0.4 -> 0.5) 그리고 다음 명령을 통해 이미지를 빌드합니다.
+
+```bash
+> docker-compose -f docker-compose-prod.yaml build
+```
+
+이미지 빌드 후 __k8s.yaml__ 파일의 이미지 버전을 역시 업데이트하고 다음 명령을 통해 새 이미지를 적용합니다.
+
+```bash
+> kubectl apply -f k8s.yaml
+```
+
+쿠버네티스가 자동으로 이전 버전의 이미지를 중지 및 제거하고 새 버전의 이미지를 실행하면서 업데이트를 진행합니다.
+
+## lerna를 통한 채팅 서비스 설정 및 실행
+
+### Kafka / Redis 실행
 
 고객 서비스와 상담원 서비스의 세션 데이터 저장을 위해 Redis를 사용합니다.
 
@@ -15,7 +98,7 @@ Angular 11, node 14, socket.io, kafka, redis 등을 활용하여 작성되었으
 다음 명령어로 Redis와 Kafka를 실행합니다.
 
 ```bash
-C:\Sources\chat-service>docker-compose -f docker-compose.yml -f kafka-stack-docker-compose/zk-single-kafka-single.yml up
+C:\Sources\chat-service>docker-compose -f docker-compose.yaml -f kafka-stack-docker-compose/zk-single-kafka-single.yaml up
 
 ...중략...
 
@@ -23,8 +106,6 @@ kafka1_1  | [2021-02-11 01:04:30,961] INFO Successfully submitted metrics to Con
 kafka1_1  | [2021-02-11 01:04:34,810] INFO [Controller id=1] Processing automatic preferred replica leader election (kafka.controller.KafkaController)
 
 ```
-
-## 채팅 서비스 설정 및 실행
 
 ### 채팅 서비스 설정
 
