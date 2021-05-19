@@ -26,6 +26,8 @@ items:
                 name: customer-lobby-server
                 port:
                   number: 3001
+          # - path: /socket.io/.*
+            
   - apiVersion: v1
     kind: Service
     metadata:

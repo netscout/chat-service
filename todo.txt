@@ -138,6 +138,14 @@ https://kubernetes.github.io/ingress-nginx/deploy/
 Docker Desktop의 경우 아래과 같이
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.46.0/deploy/static/provider/cloud/deploy.yaml
 
+------------------------
+
+socket.io가 막히는데...
+
+아마도 socket.io에서 네임스페이스를 써서 분리를 해야 할까?
+그래야 엔드포인트가 분리될 듯?
+
+이 부분 추가로 해보자.
 
 
 그 다음에 k8s, DAPR로 넘어갑시다... 천천히...
