@@ -1,5 +1,31 @@
-apiVersion: v1
+apiVersion: v1 # ingress 오브젝트 설정
 items:
+  - apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: ingress-nginx-default
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /$2
+        kubernetes.io/ingress.class: "nginx"
+    spec:
+      rules:
+      - host: localhost
+        http:
+          paths:
+          - path: /admin(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: admin-lobby-server
+                port:
+                  number: 3000
+          - path: /customer(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: customer-lobby-server
+                port:
+                  number: 3001
   - apiVersion: v1
     kind: Service
     metadata:
@@ -15,10 +41,10 @@ items:
         - name: "3000"
           port: 3000
           targetPort: 3000
-          nodePort: 30000
+          # nodePort: 30000
       selector:
         io.kompose.service: admin-lobby-server
-      type: NodePort
+      # type: NodePort
     status:
       loadBalancer: {}
   # - apiVersion: v1
@@ -57,10 +83,10 @@ items:
         - name: "3001"
           port: 3001
           targetPort: 3001
-          nodePort: 30001
+          # nodePort: 30001
       selector:
         io.kompose.service: customer-lobby-server
-      type: NodePort
+      # type: NodePort
     status:
       loadBalancer: {}
   # - apiVersion: v1
@@ -170,7 +196,7 @@ items:
             - args:
                 - npm
                 - start
-              image: admin-lobby-server:0.6
+              image: admin-lobby-server:0.9
               name: admin-lobby-server
               imagePullPolicy: Never
               ports:
@@ -244,7 +270,7 @@ items:
             - args:
                 - npm
                 - start
-              image: customer-lobby-server:0.6
+              image: customer-lobby-server:0.9
               name: customer-lobby-server
               imagePullPolicy: Never
               ports:
