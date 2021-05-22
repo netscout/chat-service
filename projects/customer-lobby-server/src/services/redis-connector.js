@@ -1,5 +1,6 @@
 import bluebird from "bluebird"
 import redis from "redis"
+import logger from "../libs/logger";
 
 bluebird.promisifyAll(redis)
 
@@ -13,11 +14,11 @@ const pwd = process.env.REDIS_PWD || "votmdnjem"
 client.auth(pwd)
 
 client.on('connect', function() {
-    console.log('Redis client connected')
+    logger.log('info','Redis client connected')
 })
 
 client.on('error', (err) => {
-    console.log(`redis error: ${err}`)
+    logger.log('error',`redis error: ${err}`)
 })
 
 export async function getValue(key) {
@@ -95,14 +96,14 @@ export async function getKeys(query) {
 //         }
 
 //         redisClient.on('connect', function() {
-//             console.log('Redis client connected');
+//             logger.log('info','Redis client connected');
 //         });
 //         redisClient.on("error", function (err) {
-//             console.log("Redis Error " + err);
+//             logger.log('info',"Redis Error " + err);
 //         });
 //     }
 
-//     console.log("before");
+//     logger.log('info',"before");
     
 //     let result = await redisClient
 //         .getAsync(key)
@@ -111,20 +112,20 @@ export async function getKeys(query) {
 //             {
 //                 isTokenValid = true;
 //             }
-//             console.log(`Token is ${isTokenValid ? "valid" : "invalid"}`);
+//             logger.log('info',`Token is ${isTokenValid ? "valid" : "invalid"}`);
 
 //             //redisClient.quit();
 
 //             return res;
 //         });
 
-//     console.log("after");
+//     logger.log('info',"after");
 //     // var value = redisClient.get(key, function(err, reply) {
 //     //     if(reply)
 //     //     {
 //     //         isTokenValid = true;
 //     //     }
-//     //     console.log(`Token is ${isTokenValid ? "valid" : "invalid"}`);
+//     //     logger.log('info',`Token is ${isTokenValid ? "valid" : "invalid"}`);
 
 //     //     //redisClient.quit();
 

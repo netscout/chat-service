@@ -1,5 +1,5 @@
+import logger from "../libs/logger";
 import { getValue, setValue, getKeys, delKey } from "./redis-connector";
-
 import { kafkaPublish } from "./kafka-producer";
 
 /**
@@ -15,7 +15,7 @@ const getAdvisorKey = (id) => {
  */
 const getConnectedAdvisorList = async () => {
   const connectedKeys = await getKeys("online_advisor:*");
-  console.log(connectedKeys);
+  logger.log("info", `연결된 상담원 키: ${connectedKeys}`);
   let connectedList = [];
   if (connectedKeys) {
     for (let key of connectedKeys) {
@@ -71,7 +71,7 @@ const sendResponse = (socket, reqMessage, params, succeed) => {
     succeed: succeed,
   };
 
-  console.log(`message response : ${resData}`);
+  logger.log("info",`message response : ${resData}`);
   socket.emit("response", resData);
 };
 
@@ -87,7 +87,7 @@ export const init = async (socket, next) => {
 
   //프론트에서 전달받은 아이디 값 확인
   if (id && username) {
-    console.log(
+    logger.log("info",
       `id: ${id}, username: ${username}, socket.id: ${socket.id} connected.`
     );
 
@@ -105,7 +105,7 @@ export const init = async (socket, next) => {
     //기존에 접속한 사용자 정보 확인
     let data = await getValue(key);
 
-    console.log(data);
+    logger.log("info",data);
 
     //데이터가 존재한다면 레디스의 데이터를 객체로 변환
     if (data) {
@@ -141,7 +141,7 @@ export const init = async (socket, next) => {
     //전체 접속자 수 조회
     let totalConnected = await getKeys("online_advisor:*");
     if (totalConnected) {
-      console.log(`total connected advisor count : ${totalConnected.length}`);
+      logger.log("info",`total connected advisor count : ${totalConnected.length}`);
     }
 
     return next();
@@ -158,7 +158,7 @@ export const init = async (socket, next) => {
  * @param {object} socket 현재 접속한 socket 객체
  */
 export const connected = async (io, socket) => {
-  console.log("상담원 들어옴.");
+  logger.log("info","상담원 들어옴.");
 
   sendResponse(socket, "connected", {}, true);
 
@@ -198,10 +198,10 @@ export const connected = async (io, socket) => {
  */
 export const disconnect = async (socket) => {
   socket.on("disconnect", async () => {
-    console.log(`disconnect from : ${socket.id}`);
+    logger.log("info",`disconnect from : ${socket.id}`);
     //소켓ID와 연결된 사용자ID 조회
     let id = await getValue(socket.id);
-    console.log(id);
+    logger.log("info",id);
 
     //접속을 종료한 상담원 정보
     const onlineAdvisor = await getCurrentAdvisor(socket.id);
@@ -219,7 +219,7 @@ export const disconnect = async (socket) => {
 
     socket.broadcast.emit("notification", noti);
 
-    console.log("상담원 나감.");
+    logger.log("info","상담원 나감.");
   });
 };
 
@@ -233,11 +233,11 @@ export const chatRequest = async (io, socket, req) => {
   sendResponse(socket, "chatRequest", req, true);
 
   if (req.toCustomer) {
-    console.log("상담원은 고객에게 채팅 요청 불가.");
+    logger.log("info","상담원은 고객에게 채팅 요청 불가.");
     return;
   }
 
-  console.log(req);
+  logger.log("info",req);
 
   //룸을 생성해 조인
   socket.join(req.roomId);
@@ -275,7 +275,7 @@ export const joinChat = (socket, req) => {
  * @param {object} req 요청 파라미터
  */
 const acceptAdvisorChatRequest = (socket, req) => {
-  console.log(req);
+  logger.log("info",req);
 
   socket.join(req.roomId);
 
@@ -300,7 +300,7 @@ const acceptAdvisorChatRequest = (socket, req) => {
  * @param {object} req 요청 파라미터
  */
 const acceptCustomerChatRequest = (socket, req) => {
-  console.log(req);
+  logger.log("info",req);
 
   socket.join(req.roomId);
 

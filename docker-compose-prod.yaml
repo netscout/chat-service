@@ -24,7 +24,7 @@ services:
       context: ./projects # 빌드의 기준이 될 폴더
       dockerfile: ./admin-server.Dockerfile # 빌드에 사용될 도커 파일
       target: prod # 빌드에 사용될 도커 파일의 스테이지
-    image: admin-lobby-server:0.10 # 빌드될 이미지의 이름
+    image: admin-lobby-server:0.13 # 빌드될 이미지의 이름
     ports:
       - 3000:3000 # 호스트 컴퓨터와 포트와 컨테이너의 포드 연결
     command: npm start
@@ -34,7 +34,7 @@ services:
       context: ./projects
       dockerfile: ./customer-server.Dockerfile
       target: prod
-    image: customer-lobby-server:0.10
+    image: customer-lobby-server:0.13
     ports:
       - 3001:3001
     command: npm start
@@ -44,7 +44,7 @@ services:
   #     context: ./projects
   #     dockerfile: ./admin-ui.Dockerfile
   #     target: prod
-  #   image: admin-lobby-ui:0.10
+  #   image: admin-lobby-ui:0.13
   #   ports:
   #     - 4200:4200
   #   command: npm start
@@ -54,7 +54,7 @@ services:
   #     context: ./projects
   #     dockerfile: ./customer-ui.Dockerfile
   #     target: prod
-  #   image: customer-lobby-ui:0.10
+  #   image: customer-lobby-ui:0.13
   #   ports:
   #     - 4201:4201
   #   command: npm start

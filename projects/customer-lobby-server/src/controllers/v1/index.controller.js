@@ -1,5 +1,6 @@
 require("dotenv").config();
 import { getValue, setValue, delKey } from "../../services/redis-connector"
+import logger from "../../libs/logger";
 
 const test = (req, res, next) => 
     res.json({
@@ -8,12 +9,12 @@ const test = (req, res, next) =>
 
 const connect = async (req, res, next) => {
     const id = req.body.id
-    console.log(`${id} connected.`)
+    logger.log('info',`${id} connected.`)
 
     let users
     let data = await getValue("users")
 
-    console.log(data)
+    logger.log('info',data)
 
     //레디스의 데이터를 배열로 변환
     if(data) {

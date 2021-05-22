@@ -62,6 +62,6 @@ export class LoginComponent
 
   roleSelectionChanged(role: Role) {
     this.currentRole = role.id;
-    console.log(`role changed: ${role.title}`)
+    console.log('info',`role changed: ${role.title}`)
   }
 }

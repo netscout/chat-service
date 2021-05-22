@@ -37,7 +37,7 @@ export class ChatUiComponent
     this.chatService
       .newMessage$
       .subscribe((data: ChatMessage) => {
-        console.log(data);
+        console.log('info',data);
         if(data.roomId == this.roomInfo.roomId) {
           this.messageList.push(data);
         }
@@ -83,7 +83,7 @@ export class ChatUiComponent
   }
 
   sendMessage() {
-    console.log(this.newMessage);
+    console.log('info',this.newMessage);
     const newMessage = new ChatMessage(
       this.roomInfo.roomId,
       this.userInfo.id,

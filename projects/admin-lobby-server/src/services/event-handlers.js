@@ -1,3 +1,4 @@
+import logger from "../libs/logger";
 //상담원에게 보내야 하는 메세지라면
 //레디스에서 소켓 ID를 구해서
 //io.sockets.connected[socketId]
@@ -59,7 +60,7 @@ export const customerCancelChatRequest = (io, chatReq) => {
  * @param {object} data 요청 데이터
  */
 export const chatJoined = (data) => {
-  console.log(data);
+  logger.log("info",data);
 };
 
 /**

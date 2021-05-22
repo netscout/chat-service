@@ -1,5 +1,5 @@
 require("dotenv").config();
-
+import logger from "../libs/logger";
 import * as chat from "./chat-handlers";
 import * as events from "./event-handlers";
 
@@ -34,7 +34,7 @@ export const initChatService = (io) => {
           chat.sendMessage(socket, req);
           break;
         default:
-          console.log(`wrong message type : ${req.type}`);
+          logger.log('error',`wrong message type : ${req.type}`);
           break;
       }
     });

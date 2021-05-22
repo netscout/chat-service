@@ -143,4 +143,28 @@ git push -f origin dapr-k8s
 
 ------------------------
 
+npm 패키지 배포 하는 법
+
+npm login
+npm publish
+
+끝!
+
+------------------------
+
+유저 권한을 루트말고 다른 걸로 줘보자...
+
+오너, 그룹 까지 변경하는 법
+https://codechacha.com/ko/linux-chown/
+chown -R :node ~~~~
+
+------------------------
+
+일자 별로 롤링 로그 추가
+https://stackoverflow.com/questions/46658040/winston-is-not-writing-logs-to-files
+
+------------------------
+
+zipkin, prometheus
+
 그 다음에 k8s, DAPR로 넘어갑시다... 천천히...

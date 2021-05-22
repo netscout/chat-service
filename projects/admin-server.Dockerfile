@@ -4,6 +4,9 @@ FROM node:14 AS base
 WORKDIR /usr/src/app
 EXPOSE 3000
 
+# 로그 디렉터리 생성 및 권한 부여
+RUN mkdir /var/log/app && chown node /var/log/app && mkdir node_modules && chown node node_modules
+
 #ENV KAFKA_HOST localhost:9092
 ENV REDIS_HOST redis
 ENV REDIS_PWD votmdnjem
@@ -19,7 +22,9 @@ COPY ./admin-lobby-server/package*.json ./
 # -----------------개발-------------------
 FROM base AS dev
 
-RUN npm install
+RUN npm install && chown -R node /usr/src/app
+
+USER node
 
 # -----------------배포용 UI 빌드-------------------
 FROM base AS ui-build
@@ -45,7 +50,11 @@ ENV FRONT_URL http://localhost
 RUN npm ci --only=production
 
 # 서버 앱 소스 추가
-COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build --chown=node:node /usr/src/app/dist ./dist
 
 # ui 앱 소스 추가
-COPY --from=ui-build /usr/src/app/ui/dist/admin-lobby-ui ./ui/dist
+COPY --from=ui-build --chown=node:node /usr/src/app/ui/dist/admin-lobby-ui ./ui/dist
+
+# RUN chown -R node /usr/src/app
+
+USER node

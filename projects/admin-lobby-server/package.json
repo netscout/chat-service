@@ -18,6 +18,7 @@
     "express": "~4.16.1",
     "http-errors": "^1.8.0",
     "kafkajs": "^1.14.0",
+    "lobby-server-logger": "0.0.5",
     "morgan": "~1.9.1",
     "redis": "^3.1.1",
     "socket.io": ">=2.4.0"

@@ -4,8 +4,9 @@ import createError from "http-errors";
 import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
-import logger from "morgan";
+import morgan from "morgan";
 import socket from "socket.io"
+import logger from "./libs/logger";
 
 import v1Router from "./routes/v1";
 
@@ -13,7 +14,7 @@ import { initChatService } from "./services/chat-service";
 
 var app = express();
 
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -85,7 +86,7 @@ signalTraps.map((type) => {
     } finally {
       process.kill(process.pid, type);
 
-      console.log("process killed...");
+      logger.log("info","process killed...");
     }
   });
 });

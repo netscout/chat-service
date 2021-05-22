@@ -188,7 +188,7 @@ export class ChatLobbyComponent implements OnInit, OnDestroy {
 
   //대화에서 나가기
   exitChat(chatMsg: ChatMessage) {
-    console.log(chatMsg);
+    console.log('info',chatMsg);
     this.chatService.exitRoom(chatMsg as ChatMessage);
 
     const index = this.chatRoomList.findIndex(

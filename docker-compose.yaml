@@ -24,7 +24,7 @@ services:
       context: ./projects # 빌드의 기준이 될 폴더
       dockerfile: ./admin-server.Dockerfile # 빌드에 사용될 도커 파일
       target: dev # 빌드에 사용될 도커 파일의 스테이지
-    image: admin-lobby-server-dev:latest # 빌드될 이미지의 이름
+    image: admin-lobby-server-dev:0.5 # 빌드될 이미지의 이름
     ports:
       - 3000:3000 # 호스트 컴퓨터와 포트와 컨테이너의 포드 연결
     volumes: 
@@ -37,7 +37,7 @@ services:
       context: ./projects
       dockerfile: ./customer-server.Dockerfile
       target: dev
-    image: customer-lobby-server-dev:latest
+    image: customer-lobby-server-dev:0.5
     ports:
       - 3001:3001
     volumes: 
@@ -50,7 +50,7 @@ services:
       context: ./projects
       dockerfile: ./admin-ui.Dockerfile
       target: dev
-    image: admin-lobby-ui-dev:latest
+    image: admin-lobby-ui-dev:0.1
     ports:
       - 4200:4200
     volumes: 
@@ -63,7 +63,7 @@ services:
       context: ./projects
       dockerfile: ./customer-ui.Dockerfile
       target: dev
-    image: customer-lobby-ui-dev:latest
+    image: customer-lobby-ui-dev:0.1
     ports:
       - 4201:4201
     volumes: 

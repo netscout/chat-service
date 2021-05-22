@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv'
 import { Kafka } from 'kafkajs'
+import logger from "../libs/logger";
 dotenv.config()
 
 const kafkaHost = process.env.KAFKA_HOST || 'kafka:9092'; //'localhost:9092';
@@ -32,8 +33,8 @@ export async function kafkaSubscribe(topic, send) {
 
 export async function kafkaDisconnect() {
     if(consumer !== undefined) {
-        console.log("start disconnecting...")
+        logger.log('info',"start disconnecting...")
         await consumer.disconnect()
-        console.log("disconnected from kafka...")
+        logger.log('info',"disconnected from kafka...")
     }
 }
