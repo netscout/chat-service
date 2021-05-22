@@ -26,6 +26,7 @@ Angular 11, node 14, socket.io, kafka, redis 등을 활용하여 작성되었으
  ┃ ┣ 📂admin-lobby-ui   # 상담원 채팅 로비 UI
  ┃ ┣ 📂customer-lobby-server   # 고객 채팅 로비 서버
  ┃ ┣ 📂customer-lobby-ui   # 고객 채팅 로비 UI
+ ┃ ┣ 📂lobby-server-logger   # 일별 롤링 로그 남기는 npm 패키지
  ┃ ┣ 📂ui-server   # UI 호스팅을 위한 서버(사용하지 않음)
  ┃ ┣ 📜.dockerignore   # dockerignore 파일
  ┃ ┣ 📜admin-server.Dockerfile   # 상담원 채팅 로비 서버 Dockerfile
