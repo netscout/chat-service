@@ -182,5 +182,8 @@ zipkin은 http 요청에 대한 기록을 하니까.. 서버간의 통신이 없
 다음에 샘플을 한 번 만들어 보자...
 https://www.npmjs.com/package/zipkin-instrumentation-express
 
+-----------------------
+
+tye, steeltoe 테스트 해보자.
 
 그 다음에 k8s, DAPR로 넘어갑시다... 천천히...
