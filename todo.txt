@@ -165,6 +165,22 @@ https://stackoverflow.com/questions/46658040/winston-is-not-writing-logs-to-file
 
 ------------------------
 
-zipkin, prometheus
+prometheus 요고 함 가보까...
+(https://gruuuuu.github.io/cloud/monitoring-02/)
+
+> kubectl apply -f ./k8s/prometheus-all.yaml
+> kubectl apply -f ./k8s/kube-state-all.yaml
+> kubectl apply -f ./k8s/grafana.yaml
+
+http://localhost:30004 로 접속 하고 아래의 대시보드 임포트
+
+https://grafana.com/grafana/dashboards/315
+
+------------------------
+
+zipkin은 http 요청에 대한 기록을 하니까.. 서버간의 통신이 없다면 좀 애매하다.
+다음에 샘플을 한 번 만들어 보자...
+https://www.npmjs.com/package/zipkin-instrumentation-express
+
 
 그 다음에 k8s, DAPR로 넘어갑시다... 천천히...

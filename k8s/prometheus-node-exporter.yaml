@@ -1,0 +1,41 @@
+# 수집역할을 하는 에이전트. 각 노드에 하나씩 띄워야 하므로 DaemonSet으로 구성
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-exporter
+  namespace: monitoring
+  labels:
+    k8s-app: node-exporter
+spec:
+  selector:
+    matchLabels:
+      k8s-app: node-exporter
+  template:
+    metadata:
+      labels:
+        k8s-app: node-exporter
+    spec:
+      containers:
+      - image: prom/node-exporter
+        name: node-exporter
+        ports:
+        - containerPort: 9100
+          protocol: TCP
+          name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: node-exporter
+  name: node-exporter
+  namespace: kube-system
+spec:
+  ports:
+  - name: http
+    port: 9100
+    nodePort: 31672
+    protocol: TCP
+  type: NodePort
+  selector:
+    k8s-app: node-exporter
