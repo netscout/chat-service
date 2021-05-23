@@ -93,6 +93,31 @@ Angular 11, node 14, socket.io, kafka, redis 등을 활용하여 작성되었으
 
 쿠버네티스가 자동으로 이전 버전의 이미지를 중지 및 제거하고 새 버전의 이미지를 실행하면서 업데이트를 진행합니다.
 
+### prometheus, grafana 모니터링 실행하기
+
+모니터링 Pod가 위치할 네임스페이스를 생성합니다.
+
+```bash
+> kubectl create namespace monitoring
+```
+
+그리고 차례로 prometheus, grafana의 설정이 담긴 yaml 파일을 실행합니다. 각 파일에는 네임스페이스에서 필요한 서비스계정과 서비스계정에 적용할 권한, Pod 설정, 서비스 설정등이 담겨 있습니다.
+
+```bash
+# prometheus 설정 및 실행
+> kubectl apply -f ./k8s/prometheus-all.yaml
+# 클러스터의 오브젝트(Pod 등)에 대한 지표정보를 생성하는 서비스 설정 및 실행
+> kubectl apply -f ./k8s/kube-state-all.yaml
+# 대시보드를 제공할 grafana 설정 및 실행
+> kubectl apply -f ./k8s/grafana.yaml
+```
+
+성공적으로 Pod가 실행되었다면 __localhost:30004__ 을 통해 grafana에 접속할 수 있습니다. 접속하여 __data source__ 추가를 선택하고, __Prometheus__ 를 선택합니다. 설정 창의 __HTTP__ 영역의 __URL__ 항목에 prometheus의 서비스에 할당된 __ClusterIP__ 의 주소와 내부 포트를 __http://{ClusterIP}:8080__ 의 형식으로 입력하고 __Save & Test__ 버튼을 눌러 __Data source is working__ 메세지 출력을 확인합니다.
+
+이제 다른 사용자가 만들어서 공개한 대시보드를 임포트할 차례입니다. [Kubernetes cluster monitoring (via Prometheus)](https://grafana.com/grafana/dashboards/315) 페이지로 이동하여 우측의 __Copy Id to Clipboard__ 버튼을 눌러 id를 복사합니다.
+
+grafana로 돌아와서 좌측 메뉴의 __+__ 메뉴에서 __Import__ 를 선택하여 id를 붙여넣고 __Load__ 버튼을 누릅니다. 하단의 __Prometheus__ 콤보박스에서 __Prometheus(default)__ 를 선택해주면 대시보드를 확인할 수 있습니다.
+
 ## lerna를 통한 채팅 서비스 설정 및 실행
 
 ### Kafka / Redis 실행
