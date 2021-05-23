@@ -20,7 +20,8 @@ Angular 11, node 14, socket.io, kafka, redis 등을 활용하여 작성되었으
 📦chat-service 
  ┣ 📂IdentityService   # 미완성
  ┣ 📂components   # Dapr 컴포넌트(미완성)
- ┣ 📂kafka-stack-docker-compose   # kafka 단독 실행을 위한 docker-compose 파일
+ ┣ 📂k8s   # prometheus, grafana 등의 yaml 파일
+ ┣ 📂kafka-stack-docker-compose   # kafka 단독 실행을 위한 docker-compose 파일(모노리포 실행시 사용)
  ┣ 📂projects   # 프로젝트 폴더
  ┃ ┣ 📂admin-lobby-server   # 상담원 채팅 로비 서버
  ┃ ┣ 📂admin-lobby-ui   # 상담원 채팅 로비 UI
